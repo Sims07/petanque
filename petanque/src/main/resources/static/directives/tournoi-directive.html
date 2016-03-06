@@ -1,0 +1,19 @@
+<!--div style="position:relative;width:3000px;" >
+	<div ng-repeat="tour in tournoi.tours" style="float-left;display:inline-block;">
+		<div>
+			<div ng-repeat="partie in tour.parties">
+				<partie partie="partie" tour="tour.nbTour" index="$index"/>
+			</div>
+		</div>
+	</div>
+</div>-->
+
+<div style="position:relative;width:3000px;" >
+	<div ng-repeat="tour in tours" >
+		<div ng-style="(tour.nbTour!=1)?{'margin-left':getMarginLeft(tour.nbTour-1)/2+'px'}:{}">
+			<div ng-repeat="partie in tour.parties" style="float-left;display:inline-block;" ng-style="(tour.nbTour!=1 && $index>0)?{'margin-left':getMarginLeft(tour.nbTour-1)+'px'}:{}">
+				<partie partie="partie" tour="tour.nbTour" index="$index" activetour="tournoi.activeNbTour==tour.nbTour"/>
+			</div>
+		</div>
+	</div>
+</div>

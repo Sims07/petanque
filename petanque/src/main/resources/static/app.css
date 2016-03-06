@@ -1,0 +1,101 @@
+@base: #f938ab;
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  -webkit-box-shadow: @style @c;
+  box-shadow:         @style @c;
+}
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+.box {
+  color: saturate(@base, 5%);
+  border-color: lighten(@base, 30%);
+  div { .box-shadow(0 0 5px, 30%) }
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.partie{
+	margin-bottom:5px;
+	text-align:center;
+	background-color:white;
+	width:20px;
+	font-size:10px !important;
+	margin-left:2px;
+	height: 100px;
+	line-height: 100px;
+	border-width: 1px;
+	border-style: solid;
+}
+.partieNb {
+	padding:0px !important;
+	background-color: grey;
+	width: 100%;
+}
+.parent{
+    position:relative;
+}
+.child{
+    top:25%;
+    width: 100%;
+    position:absolute;
+}
+
+.partie-active{
+	background-color:greenyellow;
+}
+
+.fausseEquipe{
+	background-color:white !important;
+}
+
+
+.lastPartieSelected td{
+	background-color: greenyellow !important;
+}
+
+.equipeBadgeGagnante{
+	font-weight: bold;
+	color:white;
+	background-color: #03a9f4 !important;
+}
+
+.equipeBadgePerdante{
+	text-decoration:line-through ;
+	color:black;
+	background-color: white !important;
+}
+
+.defaultEquipe{
+	background-color:#0162af;
+	color: white;
+}
+
+
+.equipeGagnante{
+	font-weight: bold;
+	color:blue;
+
+}
+
+.equipePerdante{
+	text-decoration:line-through ;
+}
+
+.vertical-text {
+	transform-origin: left top 0;
+}
+
+.trait{
+	background-color: black;
+	height: 2px;
+	width: 100%;
+	margin-bottom:2px;
+	position: relative;
+}
+.arrow{
+	position: absolute;
+	left: 50%;
+	top: -10px;
+	height: 20px;
+}

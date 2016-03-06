@@ -1,0 +1,41 @@
+<table class="table table-striped table-hover">
+	<tr ng-repeat="partie in tour.parties" ng-show="( [partie] | partieFilter:tourfilter).length"
+	ng-class="lastPartieId.lastSelected==partie.id?'lastPartieSelected':''">
+		<td style="vertical-align:middle">
+			<div style="display:inline">
+				<div>{{(!principal?'C':'')+ partie.equipe1.numero }}
+				</div>
+				<div>{{(!principal?'C':'')+ partie.equipe2.numero }}
+				</div>
+			</div>
+		</td>
+		<td style="vertical-align:middle">
+			<div style="display:inline">
+				<div ng-class="partie.equipe1Gagnante!=undefined?(partie.equipe1Gagnante?'equipeGagnante':'equipePerdante'):''">{{partie.equipe1.joueurs[0].nom}}-{{partie.equipe1.joueurs[1].nom}}
+				</div>
+				<div ng-class="partie.equipe1Gagnante!=undefined?(partie.equipe1Gagnante?'equipePerdante':'equipeGagnante'):''">{{partie.equipe2.joueurs[0].nom}}-{{partie.equipe2.joueurs[1].nom}}
+				</div>
+			</div>
+		</td>
+		<td style="vertical-align: middle;">
+			<div style="display:inline" style="margin:0px">
+				<div class="radio radio-primary">
+					<label>
+						<input type="radio" name="{{partie.id}}" ng-value="true" ng-model="partie.equipe1Gagnante" ng-change="marquerLeScorePartie(partie,principal,tournoi,tour)">
+						<span class="ripple" style="top:-10px"></span>
+						<span class="circle" style="top:-10px"></span>
+						<span class="check" style="top:-10px"></span>
+					</label>
+				</div>
+				<div class="radio radio-primary" >
+					<label>
+						<input type="radio" name="{{partie.id}}" ng-value="false" ng-model="partie.equipe1Gagnante" ng-change="marquerLeScorePartie(partie,principal,tournoi,tour)">
+						<span class="ripple" style="top:-10px"></span>
+						<span class="circle" style="top:-10px"></span>
+						<span class="check" style="top:-10px"></span>
+					</label>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>

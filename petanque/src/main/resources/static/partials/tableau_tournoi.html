@@ -1,0 +1,10 @@
+<div collapse="vm.isCollapsed">
+	<button id="connect" ng-click="vm.connect();" class="btn btn-primary" style="margin-top:0px;margin-bottom:0px;" ng-disabled="vm.connected">Activer le rafraichissement</button>
+	<button id="disconnect"  ng-click="vm.disconnect();" class="btn btn-primary" ng-disabled="!vm.connected" style="margin-top:0px;margin-bottom:0px;">Désactiver le rafraichissement</button>
+</div>
+<div style="height:10px !important;">
+	<div ng-click="vm.isCollapsed = !vm.isCollapsed" class="trait" style="text-align:center;">
+		<i class="arrow mdi-action-view-stream"></i>
+	</div>
+</div>
+<tournoi tours="vm.sousTournoi.tours"/>

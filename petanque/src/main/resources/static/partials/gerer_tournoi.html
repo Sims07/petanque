@@ -1,0 +1,131 @@
+<div class="row" style="bottom:0px;">
+	<div class="col-xs-2 col-sm-3" style="padding-left:25px;" ng-controller="EquipeCtrl as vmc">
+		
+		<div class="row">
+			<form class="well form-horizontal">
+				<fieldset>
+					<legend>Inscription Equipe</legend>
+					<div class="form-group">
+						<label for="inputEmail3" class="col-sm-2 control-label">Nom Joueur1</label>
+						<div class="col-sm-10">
+							<input  class="form-control" id="joueur1" placeholder="Nom Joueur 1" ng-model="vmc.joueur1.nom" ng-min="1">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword3" class="col-sm-2 control-label">Nom Joueur2</label>
+						<div class="col-sm-10">
+							<input  class="form-control" placeholder="Nom Joueur 2" ng-model="vmc.joueur2.nom" ng-min="1">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Principal</label>
+						<div class="radio radio-primary col-sm-2 " >
+							<label>
+								<input type="radio" name="equipePrincipal" ng-value="true" ng-model="vmc.inscritDansLePrincipal" />
+								<span class="ripple" style="top:-10px"></span>
+								<span class="circle" style="top:-10px"></span>
+								<span class="check" style="top:-10px"></span>
+							</label>
+						</div>
+						<label class="col-sm-4 control-label">Complementaire</label>
+						<div class="radio radio-primary col-sm-1 ">
+							<label>
+								<input type="radio" name="equipePrincipal" ng-value="false" ng-model="vmc.inscritDansLePrincipal"/>
+								<span class="ripple" style="top:-10px"></span>
+								<span class="circle" style="top:-10px"></span>
+								<span class="check" style="top:-10px"></span>
+							</label>
+						</div>
+					</div>
+					<button  ng-click="vmc.ajouterEquipe()" class="btn btn-primary" ng-disabled="vmc.joueur1.nom===undefined || vmc.joueur1.nom.length<1
+				|| (vmc.joueur2.nom===undefined || vmc.joueur2.nom.length<1 )" >Ajouter l'equipe</button ></fieldset>
+			</form>
+			
+		</div>
+		<div class=" well row">
+			<fieldset>
+				<legend>Equipes inscrites</legend>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label  class="col-sm-3 control-label">Filtrer par nom</label>
+						<div class="col-sm-6">
+							<input  class="form-control" placeholder="Nom Joueur" ng-model="vmc.searchFilter.$">
+						</div>
+					</div>
+					<div class="form-group" style="padding-top:0px;padding-bottom:0px;">
+						<div class="checkbox col-sm-6" style="padding-top:0px;padding-bottom:0px;">
+							<label>
+								<input type="checkbox" ng-model="vmc.finscritDansLePrincipal"  ng-change="vmc.updateFilter()">
+								<span class="checkbox-material"><span class="check"></span></span>Principal
+							</label>
+						</div>
+						<div class="checkbox col-sm-6" style="padding-top:0px;padding-bottom:0px;">
+							<label>
+								<input type="checkbox" ng-model="vmc.finscritDansLeComplementaire"  ng-change="vmc.updateFilter()">
+								<span class="checkbox-material"><span class="check"></span></span>Complementaire
+							</label>
+						</div>
+					</div>
+				</form>
+				<ul class="list-group">
+					<li class="list-group-item" ng-repeat="equipe in vmc.equipes | orderBy:'-numero'" ng-show="( [equipe] | filter:vmc.searchFilter).length"
+						ng-class="lastPartieId.lastSelected==partie.id?'lastPartieSelected':''">
+						<equipe equipemodel="equipe"></equipe>
+					</li>
+				</ul>
+			</fieldset>
+		</div>
+	</fieldset>
+</div>
+<div class="col-xs-14 col-sm-6" style="bottom:0px;">
+	
+	<div class="well container-fluid">
+		<div class="col-xs-14 col-sm-6" style="bottom:0px;">
+			<fieldset>
+				<legend>Rentrer les resultats du principal</legend>
+				<div >
+					<tournoiscore tournoi="vm.currentTournoi.principal" principal="true" ></tournoiscore>
+				</div>
+			</fieldset>
+			
+		</div>
+		<div class="col-xs-14 col-sm-6" style="bottom:0px;">
+			<fieldset>
+				<legend>Rentrer les resultats du complementaire</legend>
+				<div >
+					<tournoiscore tournoi="vm.currentTournoi.complementaire" principal="false" ></tournoiscore>
+				</div>
+			</fieldset>
+		</div>
+		
+	</div>
+	
+</div>
+<!-- Optional: clear the XS cols if their content doesn't match in height -->
+<div class="clearfix visible-xs-block"></div>
+<div class="col-xs-2 col-sm-3" style="padding-left:0px;">
+	<div class="well">
+		<fieldset>
+			<legend>Gestion du tournoi</legend>
+		<button  ng-click="vm.tirageAuSort(true)" class="btn btn-primary" ng-disabled="vm.currentTournoi.principal.tirageAuSortFait">Tirer au sort le principal</button ></fieldset>
+	<button  ng-click="vm.tirageAuSort(false)" class="btn btn-primary" style="padding-left:10px;padding-right:10px" ng-disabled="vm.currentTournoi.complementaire.tirageAuSortFait">Tirer au sort le complementaire</button ></fieldset>
+	<div class="well container-fluid" style="padding-left:0px;padding-right:0px">
+		<div class="col-xs-14 col-sm-6" style="bottom:0px;">
+			<fieldset>
+				<legend style="font-size:18px;">Principal</legend>
+				<stats stats="vm.currentTournoi.principal.statistics" statsequipe="vm.currentTournoi.stats.nbEquipesP"></stats>
+			</fieldset>
+			
+		</div>
+		<div class="col-xs-14 col-sm-6" style="bottom:0px;padding-left:0px !important;">
+			<fieldset>
+				<legend style="font-size:18px;">Complementaire</legend>
+				<stats stats="vm.currentTournoi.complementaire.statistics" statsequipe="vm.currentTournoi.stats.nbEquipesC"></stats>
+			</fieldset>
+		</div>
+		
+	</div>
+	
+	
+</fieldset>
+</div>

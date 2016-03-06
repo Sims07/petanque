@@ -1,0 +1,26 @@
+<!--div class="panel partie" ng-class="(partie.equipe1.fausseEquipe && partie.equipe2.fausseEquipe)?'faussePartie':''">
+	<div  title="{{partie.equipe1.joueurs[0].nom}}/{{partie.equipe2.joueurs[0].nom}}">
+							<span class="badge" >{{partie.equipe1.numero}}</span>
+							<span>/</span>
+							<span class="badge">{{partie.equipe2.numero}}</span>
+	</div>
+</div-->
+<div class="panel partie parent" ng-class="(!partie.termine && !(partie.equipe1==undefined ||partie.equipe2==undefined|| partie.equipe1.numero==0 || partie.equipe2.numero==0)?'partie-active':'')" ng-style="tour>1?{'width':getMarginLeft(tour-1)+'px','margin-left':'0px'}:{}">
+<div style="vertical-align:middle;line-height:normal;" class="child"  title="{{partie.equipe1.joueurs[0].nom}}/{{partie.equipe2.joueurs[0].nom}}">
+	<div>
+		<div class="partieNb" ng-class="partie.equipe1.numero==0?'fausseEquipe':
+			(partie.equipe1Gagnante!=undefined?
+			(
+			(partie.equipe1Gagnante)?'equipeBadgeGagnante':'equipeBadgePerdante'
+			):'defaultEquipe'
+		)"   style="font-size:{{10+(tour-1)}}px !important">{{partie.equipe1.numero==0?'F':partie.equipe1.numero}}</div>
+		
+		<div class="partieNb" ng-class="partie.equipe2.numero==0?'fausseEquipe':
+			(partie.equipe1Gagnante!=undefined?
+			(
+			(partie.equipe1Gagnante)?'equipeBadgePerdante':'equipeBadgeGagnante'
+			):'defaultEquipe'
+		)" style="margin-top:25px;font-size:{{10+(tour-1)}}px !important">{{partie.equipe2.numero==0?'F':partie.equipe2.numero}}</div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,21 @@
+<div class="form-horizontal">
+	<div class="form-group">
+		<label  class="col-sm-6 control-label">Filtrer par numero</label>
+		<div class="col-sm-6">
+			<input  class="form-control" placeholder="Numero de l''equipe" ng-model="tourFilter" ng-minlength="1">
+		</div>
+	</div>
+	<div class="form-group">
+		<label  class="col-sm-6 control-label">Cacher les parties terminées</label>
+		<div class="checkbox col-sm-6" style="padding-top:0px;padding-bottom:0px;">
+			<label>
+				<input type="checkbox" ng-value="true" ng-model="partieterminerfilter" >
+				<span class="checkbox-material"><span class="check"></span></span>
+			</label>
+		</div>
+	</div>
+</div>
+<ul class="pagination">
+	<li ng-class="tour.nbTour==activeTour.currentTour?'active':''" ng-repeat="tour in tournoi.tours track by $index"><a ng-click="setActiveTour(tour,principal)">{{tour.nbTour}}</a></li>
+</ul>
+<tourScore tour="tournoi.tours[activeTour.currentTour-1]" principal="principal" tournoi="tournoi" tourfilter="{'numero':tourFilter,'partieTermine':partieterminerfilter}"></tourScore>
