@@ -1,4 +1,4 @@
-package sims.chareyron.petanque.javafx.view;
+package sims.chareyron.petanque.javafx.framework;
 
 import static java.util.ResourceBundle.getBundle;
 
@@ -8,6 +8,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -22,6 +24,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import sims.chareyron.petanque.javafx.framework.mvp.View;
 
 /**
  * This class is derived from Adam Bien's
@@ -33,7 +36,7 @@ import javafx.scene.layout.AnchorPane;
  * 
  * @author Thomas Darimont
  */
-public abstract class AbstractFxmlView implements ApplicationContextAware {
+public abstract class AbstractFxmlView implements ApplicationContextAware, View {
 
 	protected ObjectProperty<Object> presenterProperty;
 	protected FXMLLoader fxmlLoader;
@@ -53,11 +56,23 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 		this.applicationContext = applicationContext;
 	}
 
+	@PostConstruct
+	public void initFramework() {
+		// Presenter presenter = (Presenter)
+		// this.applicationContext.getBean(getConventionalName("Presenter"));
+		// presenter.setView(this);
+	}
+
 	public AbstractFxmlView() {
 
 		this.presenterProperty = new SimpleObjectProperty<>();
 		this.resource = getClass().getResource(getFxmlName());
 		this.bundle = getResourceBundle(getBundleName());
+	}
+
+	@Override
+	public Parent getParent() {
+		return getView();
 	}
 
 	private Object createControllerForType(Class<?> type) {
@@ -68,7 +83,6 @@ public abstract class AbstractFxmlView implements ApplicationContextAware {
 
 		FXMLLoader loader = new FXMLLoader(resource, bundle);
 		loader.setControllerFactory(this::createControllerForType);
-
 		try {
 			loader.load();
 		} catch (IOException ex) {

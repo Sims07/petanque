@@ -33,8 +33,7 @@ import sims.chareyron.petanque.resource.TournoiRestResource;
 @Service
 @Transactional()
 public class PetanqueServiceImpl implements PetanqueService {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(PetanqueService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PetanqueService.class);
 	@Autowired
 	private TournoiRestResource tournoiResource;
 	@Autowired
@@ -60,7 +59,7 @@ public class PetanqueServiceImpl implements PetanqueService {
 
 	@Override
 	public String isPetanqueRestStarted() {
-		return "OK";
+		return "OK!";
 	}
 
 	@Override
@@ -93,14 +92,12 @@ public class PetanqueServiceImpl implements PetanqueService {
 		int nbTours = buildNbTours(nbEquipes);
 		List<Partition> partitions = buildPartitions(nbEquipes);
 		LOGGER.info(partitions.toString());
-		SousTournoi sousTournoi = principal ? tournoi.getPrincipal() : tournoi
-				.getComplementaire();
+		SousTournoi sousTournoi = principal ? tournoi.getPrincipal() : tournoi.getComplementaire();
 		sousTournoi.setTirageAuSortFait(true);
 		// repartir les fausses equipes
 		repartirFausseEquipes(partitions, sousTournoi, nbEquipesMaxTournoi);
 		// repartir vraies equipes dans les trous
-		repartirAleatoirementLesInscrits(tournoi.getEquipes(), sousTournoi,
-				principal);
+		repartirAleatoirementLesInscrits(tournoi.getEquipes(), sousTournoi, principal);
 		// generer toutes les parties
 		creerLesAutresTours(sousTournoi, nbTours);
 		genererLesParties(sousTournoi);
@@ -109,8 +106,7 @@ public class PetanqueServiceImpl implements PetanqueService {
 	}
 
 	private void cleanTourDuplicates(SousTournoi sousTournoi) {
-		LinkedHashSet<Tour> noDuplicates = new LinkedHashSet<Tour>(
-				sousTournoi.getTours());
+		LinkedHashSet<Tour> noDuplicates = new LinkedHashSet<Tour>(sousTournoi.getTours());
 		sousTournoi.getTours().clear();
 		sousTournoi.getTours().addAll(noDuplicates);
 		for (Tour tour : noDuplicates) {
@@ -125,48 +121,28 @@ public class PetanqueServiceImpl implements PetanqueService {
 	}
 
 	@Override
-	public void jouerLesPartiesForfaits(final Long aIdSousTournoi,
-			final boolean isPrincipal) {
+	public void jouerLesPartiesForfaits(final Long aIdSousTournoi, final boolean isPrincipal) {
 		Tournoi tournoi = tournoiResource.findOne(aIdSousTournoi);
 		tournoi = cleanTournoi(tournoi);
-		SousTournoi sousTournoi = isPrincipal ? tournoi.getPrincipal()
-				: tournoi.getComplementaire();
+		SousTournoi sousTournoi = isPrincipal ? tournoi.getPrincipal() : tournoi.getComplementaire();
 		int nbTours = sousTournoi.getTours().size();
 		for (int tour = 1; tour <= nbTours; tour++) {
 			List<String> tourPartiesIds = new ArrayList<String>();
 			final int currentTour = tour;
-			sousTournoi
-					.getTours()
-					.stream()
-					.filter(t -> {
-						return t.getNbTour() == currentTour;
-					})
-					.forEach(
-							t -> {
-								t.getParties()
-										.stream()
-										.filter(p -> {
-											return p.getEquipe1Gagnante() == null
-													&& p.getEquipe1() != null
-													&& p.getEquipe2() != null
-													&& p.getEquipe1()
-															.isFausseEquipe()
-													&& p.getEquipe2()
-															.isFausseEquipe();
-										})
-										.forEach(
-												p -> {
-													tourPartiesIds.add(p
-															.getId()
-															+ ":"
-															+ t.getId());
-												});
-							});
+			sousTournoi.getTours().stream().filter(t -> {
+				return t.getNbTour() == currentTour;
+			}).forEach(t -> {
+				t.getParties().stream().filter(p -> {
+					return p.getEquipe1Gagnante() == null && p.getEquipe1() != null && p.getEquipe2() != null
+							&& p.getEquipe1().isFausseEquipe() && p.getEquipe2().isFausseEquipe();
+				}).forEach(p -> {
+					tourPartiesIds.add(p.getId() + ":" + t.getId());
+				});
+			});
 
 			for (String partieIds : tourPartiesIds) {
 				String partiIdSplit[] = partieIds.split(":");
-				marquerLeScoreDeLaPartie(sousTournoi.getId(),
-						Long.valueOf(partiIdSplit[0]), true, "",
+				marquerLeScoreDeLaPartie(sousTournoi.getId(), Long.valueOf(partiIdSplit[0]), true, "",
 						Long.valueOf(partiIdSplit[1]), isPrincipal);
 			}
 		}
@@ -174,10 +150,8 @@ public class PetanqueServiceImpl implements PetanqueService {
 	}
 
 	private int getNbEquipes(Set<Equipe> equipes, boolean principal) {
-		return (int) equipes
-				.stream()
-				.filter((e) -> principal ? e.isInscritDansLePrincipal() : e
-						.isInscritDansLeComplementaire()).count();
+		return (int) equipes.stream()
+				.filter((e) -> principal ? e.isInscritDansLePrincipal() : e.isInscritDansLeComplementaire()).count();
 	}
 
 	private void creerLesAutresTours(SousTournoi sousTournoi, int nbTours) {
@@ -206,12 +180,9 @@ public class PetanqueServiceImpl implements PetanqueService {
 
 	private void genererLesParties(SousTournoi tournoi) {
 		List<Tour> tours = tournoi.getTours();
-		Collections.sort(
-				tours,
-				((t1, t2) -> {
-					return Integer.valueOf(t1.getNbTour()).compareTo(
-							Integer.valueOf(t2.getNbTour()));
-				}));
+		Collections.sort(tours, ((t1, t2) -> {
+			return Integer.valueOf(t1.getNbTour()).compareTo(Integer.valueOf(t2.getNbTour()));
+		}));
 		// creer toutes les parties
 		for (Tour tour : tours) {
 			if (tour.getNbTour() == 1) {
@@ -235,15 +206,13 @@ public class PetanqueServiceImpl implements PetanqueService {
 		}
 	}
 
-	private void repartirAleatoirementLesInscrits(Set<Equipe> equipesTournoi,
-			SousTournoi sousTournoi, final boolean principal) {
+	private void repartirAleatoirementLesInscrits(Set<Equipe> equipesTournoi, SousTournoi sousTournoi,
+			final boolean principal) {
 
 		List<Equipe> equipesARepartir = new ArrayList<Equipe>(equipesTournoi);
 		// filtre les equipes
-		equipesARepartir = equipesARepartir
-				.stream()
-				.filter((e) -> principal ? e.isInscritDansLePrincipal() : e
-						.isInscritDansLeComplementaire())
+		equipesARepartir = equipesARepartir.stream()
+				.filter((e) -> principal ? e.isInscritDansLePrincipal() : e.isInscritDansLeComplementaire())
 				.collect(Collectors.toList());
 		// parcourir la lsite des equipe a creer
 		Tour premierTour = sousTournoi.getTours().get(0);
@@ -253,24 +222,20 @@ public class PetanqueServiceImpl implements PetanqueService {
 		for (Equipe equipe : equipesPremierTour) {
 			if (equipe == null) {
 				// ajouter une vraie equipe
-				equipesPremierTour.set(equipeIndex,
-						tirageAuSort(equipesARepartir, random));
+				equipesPremierTour.set(equipeIndex, tirageAuSort(equipesARepartir, random));
 			}
 			equipeIndex++;
 		}
-		LOGGER.info("Repartition premier tour apres tirage au sort:"
-				+ premierTour.getEquipes());
+		LOGGER.info("Repartition premier tour apres tirage au sort:" + premierTour.getEquipes());
 	}
 
 	private Equipe tirageAuSort(List<Equipe> equipesARepartir, Random random) {
-		Equipe tireeAuSort = equipesARepartir.get(random
-				.nextInt(equipesARepartir.size()));
+		Equipe tireeAuSort = equipesARepartir.get(random.nextInt(equipesARepartir.size()));
 		equipesARepartir.remove(tireeAuSort);
 		return tireeAuSort;
 	}
 
-	private void repartirFausseEquipes(List<Partition> partitions,
-			SousTournoi principal, int nbEquipes) {
+	private void repartirFausseEquipes(List<Partition> partitions, SousTournoi principal, int nbEquipes) {
 		List<Tour> tours = principal.getTours();
 		Tour premierTour = new Tour();
 		premierTour.setNbTour(1);
@@ -286,8 +251,7 @@ public class PetanqueServiceImpl implements PetanqueService {
 			int nbPartitions = partition.getNbPartition();
 			for (int i = 0; i < nbPartitions; i++) {
 				positionPartition += partition.getNbEquipe();
-				repartirFausseEquipes(equipesACreer, positionPartition,
-						partition.getNbEquipe());
+				repartirFausseEquipes(equipesACreer, positionPartition, partition.getNbEquipe());
 				// laisser autant de place pour les vraies equipes
 				positionPartition += partition.getNbEquipe();
 			}
@@ -296,8 +260,7 @@ public class PetanqueServiceImpl implements PetanqueService {
 		LOGGER.info("Repartition premier tour:" + premierTour.getEquipes());
 	}
 
-	private void repartirFausseEquipes(List<Equipe> equipesACreer,
-			int positionPartition, int nbEquipe) {
+	private void repartirFausseEquipes(List<Equipe> equipesACreer, int positionPartition, int nbEquipe) {
 		List<Equipe> faussesEquipes = construireFausseEquipes(nbEquipe);
 		for (Equipe equipe : faussesEquipes) {
 
@@ -366,9 +329,8 @@ public class PetanqueServiceImpl implements PetanqueService {
 	}
 
 	@Override
-	public Partie marquerLeScoreDeLaPartie(Long aTournoiId, Long aPartieId,
-			boolean isEquipe1Gagnante, String aScore, Long aTourId,
-			boolean aIsPrincipal) {
+	public Partie marquerLeScoreDeLaPartie(Long aTournoiId, Long aPartieId, boolean isEquipe1Gagnante, String aScore,
+			Long aTourId, boolean aIsPrincipal) {
 		Partie partieAModifier = partieResource.findOne(aPartieId);
 		partieAModifier.setEnAttente(false);
 		partieAModifier.setScore(aScore);
@@ -391,8 +353,8 @@ public class PetanqueServiceImpl implements PetanqueService {
 		int nextPartieIndex = (int) Math.ceil(nextPartieDIndex);
 		int nextTourIndex = tour.getNbTour() + 1;
 		// get next tour
-		Optional<Tour> nextTourOpt = ssTournoi.getTours().stream()
-				.filter(t -> t.getNbTour() == nextTourIndex).findFirst();
+		Optional<Tour> nextTourOpt = ssTournoi.getTours().stream().filter(t -> t.getNbTour() == nextTourIndex)
+				.findFirst();
 		if (nextTourOpt.isPresent()) {
 			Tour nextTour = nextTourOpt.get();
 			// select the next partie
@@ -418,20 +380,17 @@ public class PetanqueServiceImpl implements PetanqueService {
 	}
 
 	private Equipe getEquipeGagnante(Partie partieAModifier) {
-		return partieAModifier.getEquipe1Gagnante() ? partieAModifier
-				.getEquipe1() : partieAModifier.getEquipe2();
+		return partieAModifier.getEquipe1Gagnante() ? partieAModifier.getEquipe1() : partieAModifier.getEquipe2();
 	}
 
 	@Override
-	public void calculerLesStatistiques(SousTournoi aSousTournoi,
-			Tournoi aTournoi) {
+	public void calculerLesStatistiques(SousTournoi aSousTournoi, Tournoi aTournoi) {
 		// cleanTourDuplicates(aSousTournoi);
-		int[] nbPartiesTermine = aSousTournoi.getTours().stream()
-				.mapToInt(t -> {
-					return (int) t.getParties().stream().filter(p -> {
-						return p.isTermine();
-					}).count();
-				}).toArray();
+		int[] nbPartiesTermine = aSousTournoi.getTours().stream().mapToInt(t -> {
+			return (int) t.getParties().stream().filter(p -> {
+				return p.isTermine();
+			}).count();
+		}).toArray();
 		int tourIndex = 0;
 		int nbTours = nbPartiesTermine.length;
 		List<StatisticModel> stats = new ArrayList<StatisticModel>();
@@ -446,16 +405,11 @@ public class PetanqueServiceImpl implements PetanqueService {
 		aSousTournoi.setStatistics(stats);
 		EquipeStats statsEquipe = new EquipeStats();
 		aTournoi.setStats(statsEquipe);
-		statsEquipe.setNbEquipesP((int) aTournoi.getEquipes().stream()
-				.filter(e -> {
-					return !e.isFausseEquipe() && e.isInscritDansLePrincipal();
-				}).count());
-		statsEquipe.setNbEquipesC((int) aTournoi
-				.getEquipes()
-				.stream()
-				.filter(e -> {
-					return !e.isFausseEquipe()
-							&& e.isInscritDansLeComplementaire();
-				}).count());
+		statsEquipe.setNbEquipesP((int) aTournoi.getEquipes().stream().filter(e -> {
+			return !e.isFausseEquipe() && e.isInscritDansLePrincipal();
+		}).count());
+		statsEquipe.setNbEquipesC((int) aTournoi.getEquipes().stream().filter(e -> {
+			return !e.isFausseEquipe() && e.isInscritDansLeComplementaire();
+		}).count());
 	}
 }
