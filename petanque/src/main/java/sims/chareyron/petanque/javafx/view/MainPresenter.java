@@ -14,7 +14,7 @@ public class MainPresenter extends AbstractPresenter<MyView> {
 
 	private HeaderPresenter headerPresenter;
 
-	private final static Slot HEADER_SLOT = new Slot("header");
+	public final static Slot HEADER_SLOT = new Slot("header");
 
 	@Autowired
 	public MainPresenter(MyView view, HeaderPresenter headerPresenter) {

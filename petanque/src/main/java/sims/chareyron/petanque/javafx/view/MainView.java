@@ -15,6 +15,8 @@ public class MainView extends AbstractFxmlView implements MainPresenter.MyView {
 
 	@FXML
 	private Pane header;
+	@FXML
+	private Pane body;
 
 	@PostConstruct
 	public void init() {
@@ -23,7 +25,11 @@ public class MainView extends AbstractFxmlView implements MainPresenter.MyView {
 
 	@Override
 	public void setInSlot(Slot slot, View view) {
-		header.getChildren().add(view.getParent());
+		if (MainPresenter.HEADER_SLOT.equals(slot)) {
+			header.getChildren().add(view.getParent());
+		} else {
+			body.getChildren().add(view.getParent());
+		}
 
 	}
 
