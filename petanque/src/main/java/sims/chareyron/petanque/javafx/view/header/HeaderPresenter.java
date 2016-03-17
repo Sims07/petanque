@@ -25,7 +25,7 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 	}
 
 	@Override
-	public void onStart() {
+	public void onReveal() {
 		// TODO Auto-generated method stub
 
 	}

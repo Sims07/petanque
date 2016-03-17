@@ -1,5 +1,8 @@
 package sims.chareyron.petanque.javafx.view;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +18,7 @@ public class MainPresenter extends AbstractPresenter<MyView> {
 	private HeaderPresenter headerPresenter;
 
 	public final static Slot HEADER_SLOT = new Slot("header");
+	public final static Slot BODY_SLOT = new Slot("body");
 
 	@Autowired
 	public MainPresenter(MyView view, HeaderPresenter headerPresenter) {
@@ -30,18 +34,22 @@ public class MainPresenter extends AbstractPresenter<MyView> {
 	@Override
 	public void onBind() {
 		setInSlot(HEADER_SLOT, headerPresenter);
-		System.out.println("Main presenter on bind");
 
 	}
 
 	@Override
-	public void onStart() {
+	public List<Slot> getSlotList() {
+		return Arrays.asList(HEADER_SLOT, BODY_SLOT);
+	}
+
+	@Override
+	public void onReveal() {
 		System.out.println("Main presenter on start");
 
 	}
 
 	@Override
 	public String getToken() {
-		return "default";
+		return null;
 	}
 }

@@ -15,6 +15,14 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 		return view;
 	}
 
+	public List<Slot> getSlotList() {
+		return new ArrayList<>();
+	}
+
+	public Slot revealedInSlot() {
+		return null;
+	}
+
 	protected void setInSlot(Slot slot, AbstractWidgetPresenter<?> childPresenter) {
 		getView().setInSlot(slot, childPresenter.getView());
 		childrenPresenters.add(childPresenter);
@@ -30,7 +38,7 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 		if (!bound) {
 			onBind();
 		} else {
-			onStart();
+			onReveal();
 		}
 
 	}

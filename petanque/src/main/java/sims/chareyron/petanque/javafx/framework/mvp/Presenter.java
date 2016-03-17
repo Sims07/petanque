@@ -9,9 +9,13 @@ public interface Presenter<V extends View> {
 
 	void onBind();
 
-	void onStart();
+	void onReveal();
 
 	void reveal();
+
+	public List<Slot> getSlotList();
+
+	public Slot revealedInSlot();
 
 	List<Presenter> childrenPresenter();
 }
