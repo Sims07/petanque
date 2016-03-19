@@ -9,7 +9,7 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 	protected V view;
 
 	@SuppressWarnings("rawtypes")
-	private List<Presenter> childrenPresenters = new ArrayList<>();
+	private List<Presenter<?>> childrenPresenters = new ArrayList<>();
 
 	public V getView() {
 		return view;
@@ -28,18 +28,13 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 		childrenPresenters.add(childPresenter);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public List<Presenter> childrenPresenter() {
+	public List<Presenter<?>> childrenPresenter() {
 		return childrenPresenters;
 	}
 
 	@Override
 	public void reveal() {
-		if (!bound) {
-			onBind();
-		} else {
-			onReveal();
-		}
+		onReveal();
 
 	}
 

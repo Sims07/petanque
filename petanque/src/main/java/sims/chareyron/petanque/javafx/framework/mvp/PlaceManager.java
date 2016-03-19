@@ -9,4 +9,6 @@ public interface PlaceManager {
 	void revealPlace(String token);
 
 	void revealDefaultPlace();
+
+	Stage getStage();
 }

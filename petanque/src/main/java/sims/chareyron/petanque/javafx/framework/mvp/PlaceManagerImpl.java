@@ -14,13 +14,14 @@ import sims.chareyron.petanque.javafx.framework.AbstractFxmlView;
 @Component
 public class PlaceManagerImpl implements PlaceManager {
 
-	private Stage stage;
+	public Stage stage;
 	@SuppressWarnings("rawtypes")
 	private Map<Presenter, Boolean> boundPresentersMap = new HashMap<>();
 	private Presenter<? extends View> currentPresenter;
 	@Autowired
 	private List<Presenter<? extends View>> presenters;
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void init(Stage stage) {
 		this.stage = stage;
@@ -32,19 +33,39 @@ public class PlaceManagerImpl implements PlaceManager {
 
 	@Override
 	public void revealPlace(String token) {
-		Presenter<? extends View> defaultPresenter = presenters.parallelStream()
-				.filter(p -> p.getToken() != null && p.getToken().equals("default")).findFirst().get();
+		Presenter<? extends View> presenterWithToken = presenters.parallelStream()
+				.filter(p -> p.getToken() != null && p.getToken().equals(token)).findFirst().get();
 		Presenter<?> parentPresenter = null;
-		if (!boundPresentersMap.containsKey(defaultPresenter)) {
-			boundPresentersMap.put(defaultPresenter, true);
-			parentPresenter = onBind(defaultPresenter);
+		if (!boundPresentersMap.containsKey(presenterWithToken)) {
+			boundPresentersMap.put(presenterWithToken, true);
+			parentPresenter = onBind(presenterWithToken);
 
 		} else {
-			boundPresentersMap.put(defaultPresenter, false);
-			defaultPresenter.onReveal();
+			boundPresentersMap.put(presenterWithToken, false);
+			parentPresenter = onReveal(presenterWithToken);
 		}
-		currentPresenter = defaultPresenter;
+		currentPresenter = presenterWithToken;
 		revealInScene(parentPresenter);
+
+	}
+
+	private Presenter<?> onReveal(Presenter<? extends View> presenterToReveal) {
+
+		// appeler on bind sur tous ses enfants
+		presenterToReveal.childrenPresenter().forEach(p -> p.onReveal());
+		// reveler dans le parent
+		Slot revealedInSlot = presenterToReveal.revealedInSlot();
+		// trouver ou se trouve le slot
+		Presenter<?> parentPresenter = presenters.stream().filter(p -> {
+			return p.getSlotList().contains(revealedInSlot);
+		}).findFirst().get();
+		// initialiser la vue java FX
+		((AbstractFxmlView) parentPresenter.getView()).getParent();
+		// appeler on reveal sur tout ses enfants
+		parentPresenter.onReveal();
+		parentPresenter.childrenPresenter().forEach(p -> p.onReveal());
+		parentPresenter.getView().setInSlot(revealedInSlot, presenterToReveal.getView());
+		return parentPresenter;
 
 	}
 
@@ -55,11 +76,17 @@ public class PlaceManagerImpl implements PlaceManager {
 		// reveler dans le parent
 		Slot revealedInSlot = presenterToBind.revealedInSlot();
 		// trouver ou se trouve le slot
-		@SuppressWarnings("rawtypes")
 		Presenter<?> parentPresenter = presenters.stream().filter(p -> {
 			return p.getSlotList().contains(revealedInSlot);
 		}).findFirst().get();
 		((AbstractFxmlView) parentPresenter.getView()).getParent();
+		// appeler on bind sur tout ses enfants
+		parentPresenter.onBind();
+		parentPresenter.childrenPresenter().forEach(p -> {
+			// init java fx view
+			((AbstractFxmlView) p.getView()).getParent();
+			p.onBind();
+		});
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToBind.getView());
 		return parentPresenter;
 	}
@@ -74,6 +101,11 @@ public class PlaceManagerImpl implements PlaceManager {
 		Scene scene = new Scene(defaultPresenter.getView().getParent());
 		defaultPresenter.reveal();
 		stage.setScene(scene);
+	}
+
+	@Override
+	public Stage getStage() {
+		return stage;
 	}
 
 }

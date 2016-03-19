@@ -17,5 +17,5 @@ public interface Presenter<V extends View> {
 
 	public Slot revealedInSlot();
 
-	List<Presenter> childrenPresenter();
+	List<Presenter<?>> childrenPresenter();
 }
