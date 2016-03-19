@@ -20,8 +20,9 @@ public class PetanqueManagerApplication extends AbstractJavaFxSpring {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		placeManager.init(stage);
+		placeManager.setStage(stage);
 		placeManager.revealDefaultPlace();
+		placeManager.init();
 	}
 
 }

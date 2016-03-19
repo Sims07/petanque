@@ -6,14 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.MainView">
-   <top>
-      <Pane fx:id="header" prefHeight="20.0" prefWidth="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Label" />
-         </children></Pane>
-   </top>
-   <center>
-      <Pane fx:id="body"  BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.MainView">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Pane fx:id="header" prefHeight="20.0" prefWidth="50.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Label" />
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <Pane fx:id="body" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

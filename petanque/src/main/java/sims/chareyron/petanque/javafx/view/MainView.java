@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import sims.chareyron.petanque.javafx.framework.AbstractFxmlView;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
@@ -30,6 +31,13 @@ public class MainView extends AbstractFxmlView implements MainPresenter.MyView {
 		} else {
 			body.getChildren().add(view.getParent());
 		}
+
+	}
+
+	@Override
+	public void setViewBindings(Stage stage) {
+		body.prefWidthProperty().bind(stage.widthProperty());
+		body.prefHeightProperty().bind(stage.heightProperty());
 
 	}
 

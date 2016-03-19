@@ -21,10 +21,9 @@ public class PlaceManagerImpl implements PlaceManager {
 	@Autowired
 	private List<Presenter<? extends View>> presenters;
 
-	@SuppressWarnings("static-access")
 	@Override
-	public void init(Stage stage) {
-		this.stage = stage;
+	public void init() {
+
 		stage.setResizable(true);
 		stage.centerOnScreen();
 		stage.setFullScreen(true);
@@ -106,6 +105,12 @@ public class PlaceManagerImpl implements PlaceManager {
 	@Override
 	public Stage getStage() {
 		return stage;
+	}
+
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
+
 	}
 
 }
