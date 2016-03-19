@@ -31,4 +31,12 @@ public class HeaderView extends AbstractFxmlView implements HeaderPresenter.MyVi
 
 	}
 
+	public void onTournoiCreationClassiqueClicked() {
+		System.out.println("Creation tournoi classique");
+	}
+
+	public void onTournoiLoadedClicked() {
+		System.out.println("Chargement tournoi");
+	}
+
 }

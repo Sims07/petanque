@@ -5,25 +5,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPanel"  fx:controller="sims.chareyron.petanque.javafx.view.header.HeaderView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.header.HeaderView">
    <children>
       <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <MenuBar HBox.hgrow="ALWAYS" fx:id="menuBar">
+            <MenuBar fx:id="menuBar" HBox.hgrow="ALWAYS">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Fichier">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                        <Menu mnemonicParsing="false" text="Nouveau tournoi">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onTournoiCreationClassiqueClicked" text="Classique" />
+                            <MenuItem mnemonicParsing="false" text="Poule" />
+                          </items>
+                        </Menu>
+                    
+                    <MenuItem mnemonicParsing="false" onAction="#onTournoiLoadedClicked" text="Charger un tournoi" />
                   </items>
                 </Menu>
               </menus>
