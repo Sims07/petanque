@@ -72,8 +72,7 @@ public class PlaceManagerImpl implements PlaceManager {
 
 	private Presenter<?> onBind(Presenter<? extends View> presenterToBind) {
 		boundPresentersMap.put(presenterToBind, true);
-		// appeler on bind sur tous ses enfants
-		presenterToBind.childrenPresenter().forEach(p -> p.onBind());
+
 		// reveler dans le parent
 		Slot revealedInSlot = presenterToBind.revealedInSlot();
 		// trouver ou se trouve le slot
@@ -91,6 +90,12 @@ public class PlaceManagerImpl implements PlaceManager {
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToBind.getView());
 		// bind du presenter courant
 		presenterToBind.onBind();
+		// appeler on bind sur tous ses enfants
+		presenterToBind.childrenPresenter().forEach(p -> {
+			// init java fx view
+			((AbstractFxmlView) p.getView()).getParent();
+			p.onBind();
+		});
 		return parentPresenter;
 	}
 
