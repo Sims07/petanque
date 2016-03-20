@@ -11,7 +11,7 @@
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <Pane fx:id="header" prefHeight="20.0" prefWidth="50.0" BorderPane.alignment="CENTER">
+            <Pane fx:id="header"  BorderPane.alignment="CENTER">
                <children>
                   <Label text="Label" />
                </children>

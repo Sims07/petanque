@@ -27,8 +27,10 @@ public class MainView extends AbstractFxmlView implements MainPresenter.MyView {
 	@Override
 	public void setInSlot(Slot slot, View view) {
 		if (MainPresenter.HEADER_SLOT.equals(slot)) {
+			header.getChildren().clear();
 			header.getChildren().add(view.getParent());
 		} else {
+			body.getChildren().clear();
 			body.getChildren().add(view.getParent());
 		}
 

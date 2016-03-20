@@ -20,6 +20,7 @@ public class PlaceManagerImpl implements PlaceManager {
 	private Presenter<? extends View> currentPresenter;
 	@Autowired
 	private List<Presenter<? extends View>> presenters;
+	private boolean sceneBuilt = false;
 
 	@Override
 	public void init() {
@@ -40,7 +41,6 @@ public class PlaceManagerImpl implements PlaceManager {
 			parentPresenter = onBind(presenterWithToken);
 
 		} else {
-			boundPresentersMap.put(presenterWithToken, false);
 			parentPresenter = onReveal(presenterWithToken);
 		}
 		currentPresenter = presenterWithToken;
@@ -64,6 +64,8 @@ public class PlaceManagerImpl implements PlaceManager {
 		parentPresenter.onReveal();
 		parentPresenter.childrenPresenter().forEach(p -> p.onReveal());
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToReveal.getView());
+		// bind du presenter courant
+		presenterToReveal.onReveal();
 		return parentPresenter;
 
 	}
@@ -87,6 +89,8 @@ public class PlaceManagerImpl implements PlaceManager {
 			p.onBind();
 		});
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToBind.getView());
+		// bind du presenter courant
+		presenterToBind.onBind();
 		return parentPresenter;
 	}
 
@@ -97,9 +101,12 @@ public class PlaceManagerImpl implements PlaceManager {
 	}
 
 	private void revealInScene(Presenter<? extends View> defaultPresenter) {
-		Scene scene = new Scene(defaultPresenter.getView().getParent());
-		defaultPresenter.reveal();
-		stage.setScene(scene);
+		if (!sceneBuilt) {
+			Scene scene = new Scene(defaultPresenter.getView().getParent());
+			defaultPresenter.reveal();
+			stage.setScene(scene);
+			sceneBuilt = true;
+		}
 	}
 
 	@Override

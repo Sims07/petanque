@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -41,7 +39,6 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 	protected ObjectProperty<Object> presenterProperty;
 	protected FXMLLoader fxmlLoader;
 	protected ResourceBundle bundle;
-
 	protected URL resource;
 
 	private ApplicationContext applicationContext;
@@ -54,13 +51,6 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 		}
 
 		this.applicationContext = applicationContext;
-	}
-
-	@PostConstruct
-	public void initFramework() {
-		// Presenter presenter = (Presenter)
-		// this.applicationContext.getBean(getConventionalName("Presenter"));
-		// presenter.setView(this);
 	}
 
 	public AbstractFxmlView() {
