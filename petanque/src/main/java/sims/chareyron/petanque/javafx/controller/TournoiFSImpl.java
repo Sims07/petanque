@@ -2,10 +2,13 @@ package sims.chareyron.petanque.javafx.controller;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sims.chareyron.petanque.javafx.model.EquipeModel;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.Partition;
@@ -89,6 +92,37 @@ public class TournoiFSImpl implements TournoiFS {
 		currentTournoi.setNom("A definir");
 		currentTournoi = petanqueService.createTournoi(currentTournoi);
 		return currentTournoi;
+	}
+
+	@Override
+	public Tournoi addEquipeToTournoi(EquipeModel equipe) {
+		currentTournoi = addEquipeToTournoi(currentTournoi.getId(), equipe.map());
+		return currentTournoi;
+	}
+
+	Function<Equipe, EquipeModel> mapperEquipeToModel = new Function<Equipe, EquipeModel>() {
+
+		@Override
+		public EquipeModel apply(Equipe t) {
+			return t.map();
+		}
+
+	};
+
+	@Override
+	public List<EquipeModel> getEquipesPrincipal() {
+		currentTournoi = getTournoiById(currentTournoi.getId());
+		return currentTournoi.getEquipes().parallelStream().filter(e -> {
+			return e.isInscritDansLePrincipal();
+		}).map(mapperEquipeToModel).collect(Collectors.<EquipeModel> toList());
+	}
+
+	@Override
+	public List<EquipeModel> getEquipesComplementaire() {
+		currentTournoi = getTournoiById(currentTournoi.getId());
+		return currentTournoi.getEquipes().parallelStream().filter(e -> {
+			return e.isInscritDansLeComplementaire();
+		}).map(mapperEquipeToModel).collect(Collectors.<EquipeModel> toList());
 	}
 
 }

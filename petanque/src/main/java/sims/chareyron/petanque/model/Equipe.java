@@ -1,6 +1,7 @@
 package sims.chareyron.petanque.model;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,9 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import javafx.beans.property.SimpleStringProperty;
+import sims.chareyron.petanque.javafx.model.EquipeModel;
 
 /**
  * 
@@ -63,8 +67,7 @@ public class Equipe extends GenericPE {
 		return inscritDansLeComplementaire;
 	}
 
-	public void setInscritDansLeComplementaire(
-			boolean inscritDansLeComplementaire) {
+	public void setInscritDansLeComplementaire(boolean inscritDansLeComplementaire) {
 		this.inscritDansLeComplementaire = inscritDansLeComplementaire;
 	}
 
@@ -90,6 +93,17 @@ public class Equipe extends GenericPE {
 
 	public void setNumero(int numero) {
 		this.numero = numero;
+	}
+
+	public EquipeModel map() {
+		EquipeModel equipeModel = new EquipeModel();
+		equipeModel.setId(id);
+		equipeModel.setInscritComplementaire(inscritDansLeComplementaire);
+		equipeModel.setInscritPrincipal(inscritDansLePrincipal);
+		Iterator<Joueur> iterator = joueurs.iterator();
+		equipeModel.setJoueur1(new SimpleStringProperty(iterator.next().getNom()));
+		equipeModel.setJoueur2(new SimpleStringProperty(iterator.next().getNom()));
+		return equipeModel;
 	}
 
 }

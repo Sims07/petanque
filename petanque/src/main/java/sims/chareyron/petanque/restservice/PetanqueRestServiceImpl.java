@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import sims.chareyron.petanque.filter.View;
 import sims.chareyron.petanque.model.Equipe;
@@ -22,10 +23,8 @@ import sims.chareyron.petanque.model.Tournoi;
 import sims.chareyron.petanque.service.PetanqueService;
 import sims.chareyron.petanque.service.TournoiWsController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-@RestController
-@RequestMapping(path = "/petanque")
+//@RestController
+//@RequestMapping(path = "/petanque")
 public class PetanqueRestServiceImpl implements PetanqueRestService {
 
 	@Autowired
@@ -54,16 +53,14 @@ public class PetanqueRestServiceImpl implements PetanqueRestService {
 
 	@Override
 	@RequestMapping(path = "/tournois/{id}/equipes", method = { RequestMethod.POST })
-	public Tournoi addEquipeToTournoi(@PathVariable("id") Long aIdTournoi,
-			@RequestBody Equipe aEquipeToAdd) {
+	public Tournoi addEquipeToTournoi(@PathVariable("id") Long aIdTournoi, @RequestBody Equipe aEquipeToAdd) {
 		petanqueService.addEquipeToTournoi(aIdTournoi, aEquipeToAdd);
 		return getAndRefreshTournoi(aIdTournoi);
 	}
 
 	@Override
 	@RequestMapping(path = "/tournois/{id}/{isPrincipal}/tirageAuSort", method = { RequestMethod.POST })
-	public Tournoi tirageAuSort(@PathVariable("id") Long aId,
-			@PathVariable("isPrincipal") Boolean isPrincipal) {
+	public Tournoi tirageAuSort(@PathVariable("id") Long aId, @PathVariable("isPrincipal") Boolean isPrincipal) {
 		petanqueService.tirageAuSort(aId, isPrincipal);
 		petanqueService.jouerLesPartiesForfaits(aId, isPrincipal);
 		return getAndRefreshTournoi(aId);
@@ -71,8 +68,7 @@ public class PetanqueRestServiceImpl implements PetanqueRestService {
 
 	@Override
 	@RequestMapping(path = "/tournois/{id}/{isPrincipal}", method = { RequestMethod.GET })
-	public Tournoi getTournoiById(@PathVariable("id") Long aId,
-			@PathVariable("isPrincipal") Boolean isPrincipal) {
+	public Tournoi getTournoiById(@PathVariable("id") Long aId, @PathVariable("isPrincipal") Boolean isPrincipal) {
 		Tournoi res = petanqueService.getTournoiById(aId);
 		if (isPrincipal) {
 			res.setComplementaire(null);
@@ -95,16 +91,13 @@ public class PetanqueRestServiceImpl implements PetanqueRestService {
 	}
 
 	@Override
-	@RequestMapping(path = "/tournois/{tid}/soustournoi/{principal}/{sid}/tour/{tourid}/parties/{partieId}", method = { RequestMethod.POST })
-	public Tournoi marquerLeScoreDeLaPartie(
-			@PathVariable("tid") Long aTournoiId,
-			@PathVariable("sid") Long aSousTournoiId,
-			@PathVariable("tourid") Long aTourId,
-			@PathVariable("partieId") Long aPartieId,
-			@RequestBody Partie partieAModifier,
+	@RequestMapping(path = "/tournois/{tid}/soustournoi/{principal}/{sid}/tour/{tourid}/parties/{partieId}", method = {
+			RequestMethod.POST })
+	public Tournoi marquerLeScoreDeLaPartie(@PathVariable("tid") Long aTournoiId,
+			@PathVariable("sid") Long aSousTournoiId, @PathVariable("tourid") Long aTourId,
+			@PathVariable("partieId") Long aPartieId, @RequestBody Partie partieAModifier,
 			@PathVariable("principal") boolean aIsPrincipal) {
-		petanqueService.marquerLeScoreDeLaPartie(aTournoiId, aPartieId,
-				partieAModifier.getEquipe1Gagnante(),
+		petanqueService.marquerLeScoreDeLaPartie(aTournoiId, aPartieId, partieAModifier.getEquipe1Gagnante(),
 				partieAModifier.getScore(), aTourId, aIsPrincipal);
 		Tournoi t = getAndRefreshTournoi(aTournoiId);
 		if (aIsPrincipal) {
@@ -132,8 +125,7 @@ public class PetanqueRestServiceImpl implements PetanqueRestService {
 	}
 
 	private void cleanTourDuplicates(SousTournoi sousTournoi) {
-		LinkedHashSet<Tour> noDuplicates = new LinkedHashSet<Tour>(
-				sousTournoi.getTours());
+		LinkedHashSet<Tour> noDuplicates = new LinkedHashSet<Tour>(sousTournoi.getTours());
 		sousTournoi.getTours().clear();
 		sousTournoi.getTours().addAll(noDuplicates);
 		Collections.sort(sousTournoi.getTours(), new Comparator<Tour>() {

@@ -1,8 +1,11 @@
 package sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
@@ -19,8 +22,30 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 	@FXML
 	TextField joueur2;
 
+	@FXML
+	TableView<EquipeModel> equipeTable;
+
+	@FXML
+	TableColumn<EquipeModel, String> joueur1Column;
+
+	@FXML
+	TableColumn<EquipeModel, String> joueur2Column;
+
 	@Override
 	public void setInSlot(Slot slot, View view) {
+
+	}
+
+	@Override
+	public void setViewBindings() {
+		// Initialize the person table with the two columns.
+		joueur1Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur1());
+		joueur2Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur2());
+	}
+
+	@Override
+	public void setEquipes(ObservableList<EquipeModel> equipes) {
+		equipeTable.setItems(equipes);
 
 	}
 
@@ -29,7 +54,7 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 		joueur1.textProperty().bindBidirectional(equipe.getJoueur1());
 		joueur2.textProperty().bindBidirectional(equipe.getJoueur2());
 		creerEquipe.disableProperty()
-				.bind(Bindings.and(joueur1.textProperty().isEmpty(), joueur2.textProperty().isEmpty()));
+				.bind(Bindings.or(joueur1.textProperty().isEmpty(), joueur2.textProperty().isEmpty()));
 	}
 
 	public void onAjouterEquipeClicked() {
