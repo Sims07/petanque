@@ -18,7 +18,7 @@ public interface PetanqueService {
 
 	String isPetanqueRestStarted();
 
-	Tournoi addEquipeToTournoi(Long aIdTournoi, Equipe aEquipeToAdd);
+	Equipe addEquipeToTournoi(Long aIdTournoi, Equipe aEquipeToAdd);
 
 	Tournoi tirageAuSort(Long tournoiId, boolean principal);
 
@@ -28,9 +28,8 @@ public interface PetanqueService {
 
 	void removeEquipeToTournoi(Long aEquipeId);
 
-	Partie marquerLeScoreDeLaPartie(Long aTournoiId, Long aPartieId,
-			boolean isEquipe1Gagnante, String aScore, Long aTourId,
-			boolean aIsPrincipal);
+	Partie marquerLeScoreDeLaPartie(Long aTournoiId, Long aPartieId, boolean isEquipe1Gagnante, String aScore,
+			Long aTourId, boolean aIsPrincipal);
 
 	void jouerLesPartiesForfaits(Long sousTournoi, boolean isPrincipal);
 

@@ -69,7 +69,7 @@ public class PetanqueServiceImpl implements PetanqueService {
 	}
 
 	@Override
-	public Tournoi addEquipeToTournoi(Long aIdTournoi, Equipe aEquipeToAdd) {
+	public Equipe addEquipeToTournoi(Long aIdTournoi, Equipe aEquipeToAdd) {
 		Tournoi tournoi = tournoiResource.findOne(aIdTournoi);
 		if (aEquipeToAdd.isInscritDansLeComplementaire()) {
 			aEquipeToAdd.setNumero(tournoi.getNextNumeroEquipeC());
@@ -80,7 +80,7 @@ public class PetanqueServiceImpl implements PetanqueService {
 		}
 		equipeResource.save(aEquipeToAdd);
 		tournoi.getEquipes().add(aEquipeToAdd);
-		return tournoi;
+		return aEquipeToAdd;
 	}
 
 	@Override

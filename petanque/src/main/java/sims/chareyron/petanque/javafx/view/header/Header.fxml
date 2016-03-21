@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -20,9 +21,23 @@
                           </items>
                         </Menu>
                     
-                    <MenuItem mnemonicParsing="false" onAction="#onTournoiLoadedClicked" text="Charger un tournoi" />
+                          <MenuItem mnemonicParsing="false" onAction="#onTournoiLoadedClicked" text="Charger un tournoi" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Edition">
+                     <items>
+                        <MenuItem fx:id="previous" mnemonicParsing="false" onAction="#onPrecedentClicked" text="Precédent">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="Z" control="ANY" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="next" mnemonicParsing="false" onAction="#onSuivantClicked" text="Suivant">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="Y" control="ANY" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </children>

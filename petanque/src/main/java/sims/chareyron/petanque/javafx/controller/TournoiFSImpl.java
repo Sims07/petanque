@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sims.chareyron.petanque.javafx.model.Action;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
@@ -44,9 +45,9 @@ public class TournoiFSImpl implements TournoiFS {
 		return petanqueService.isPetanqueRestStarted();
 	}
 
-	public Tournoi addEquipeToTournoi(Long aIdTournoi, Equipe aEquipeToAdd) {
-		currentTournoi = petanqueService.addEquipeToTournoi(aIdTournoi, aEquipeToAdd);
-		return currentTournoi;
+	public Equipe addEquipeToTournoi(Long aIdTournoi, Equipe aEquipeToAdd) {
+		return petanqueService.addEquipeToTournoi(aIdTournoi, aEquipeToAdd);
+
 	}
 
 	public Tournoi tirageAuSort(Long tournoiId, boolean principal) {
@@ -63,8 +64,8 @@ public class TournoiFSImpl implements TournoiFS {
 		return currentTournoi;
 	}
 
-	public void refreshTournoi() {
-		getTournoiById(currentTournoi.getId());
+	public Tournoi refreshTournoi() {
+		return getTournoiById(currentTournoi.getId());
 	}
 
 	public void removeEquipeToTournoi(Long aEquipeId) {
@@ -96,8 +97,25 @@ public class TournoiFSImpl implements TournoiFS {
 
 	@Override
 	public Tournoi addEquipeToTournoi(EquipeModel equipe) {
-		currentTournoi = addEquipeToTournoi(currentTournoi.getId(), equipe.map());
-		return currentTournoi;
+
+		Equipe addedEquipe = addEquipeToTournoi(currentTournoi.getId(), equipe.map());
+		actionMementoFS.ajouterAction(new Action() {
+			private Long equipeId = addedEquipe.getId();
+
+			@Override
+			public void rollback() {
+				removeEquipeToTournoi(equipeId);
+
+			}
+
+			@Override
+			public void execute() {
+				equipeId = addEquipeToTournoi(currentTournoi.getId(), equipe.map()).getId();
+
+			}
+		});
+		return refreshTournoi();
+
 	}
 
 	Function<Equipe, EquipeModel> mapperEquipeToModel = new Function<Equipe, EquipeModel>() {

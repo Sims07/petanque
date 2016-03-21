@@ -1,12 +1,16 @@
 package sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractWidgetPresenter;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
+import sims.chareyron.petanque.javafx.model.NextEvent;
+import sims.chareyron.petanque.javafx.model.PetanqueEvent;
+import sims.chareyron.petanque.javafx.model.PreviousEvent;
 
 public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<IJoueursView>
 		implements JoueursPresenter, JoueursUiHandlers {
@@ -23,6 +27,16 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 	public AbstractJoueursPresenter(JoueursView view) {
 		super();
 		this.view = view;
+	}
+
+	@EventListener
+	public void handlePreviousActionEvent(PetanqueEvent<PreviousEvent> creationEvent) {
+		chargerLesEquipes(equipes);
+	}
+
+	@EventListener
+	public void handleNextActionEvent(PetanqueEvent<NextEvent> creationEvent) {
+		chargerLesEquipes(equipes);
 	}
 
 	@Override

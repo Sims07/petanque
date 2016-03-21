@@ -6,4 +6,8 @@ public interface HeaderUiHandlers extends UiHandlers {
 	void onTournoiClassiqueCreationClicked();
 
 	void onTournoiLoadedClicked();
+
+	void onPreviousClicked();
+
+	void onNextClicked();
 }
