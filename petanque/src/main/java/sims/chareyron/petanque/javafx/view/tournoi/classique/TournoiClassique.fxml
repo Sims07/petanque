@@ -10,19 +10,17 @@
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane prefWidth="250.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Principal">
                   <content>
-                    <AnchorPane fx:id="principalJoueursPanel" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding></AnchorPane>
+                    <AnchorPane fx:id="principalJoueursPanel" minHeight="0.0" minWidth="0.0" prefWidth="200.0">
+                    </AnchorPane>
                   </content>
                 </Tab>
                 <Tab text="Complementaire">
                   <content>
-                    <AnchorPane fx:id="complementaireJoueursPanel" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane fx:id="complementaireJoueursPanel" minHeight="0.0" minWidth="0.0" prefWidth="200.0" />
                   </content>
                 </Tab>
               </tabs>

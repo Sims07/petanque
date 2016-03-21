@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.Pane;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
@@ -16,6 +18,12 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 	@FXML
 	Button creerEquipe;
 
+	@FXML
+	Pane mainPanel;
+	@FXML
+	Pane tablePanel;
+	@FXML
+	TitledPane titledTablePane;
 	@FXML
 	TextField joueur1;
 
@@ -41,6 +49,8 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 		// Initialize the person table with the two columns.
 		joueur1Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur1());
 		joueur2Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur2());
+		mainPanel.prefWidthProperty().bind(((Pane) mainPanel.getParent()).widthProperty());
+		mainPanel.prefHeightProperty().bind(((Pane) mainPanel.getParent()).heightProperty());
 	}
 
 	@Override
