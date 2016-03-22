@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sims.chareyron.petanque.javafx.model.AbstractAction;
 import sims.chareyron.petanque.javafx.model.Action;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
 import sims.chareyron.petanque.model.Equipe;
@@ -65,12 +66,12 @@ public class TournoiFSImpl implements TournoiFS {
 	}
 
 	public Tournoi refreshTournoi() {
-		return getTournoiById(currentTournoi.getId());
+		currentTournoi = getTournoiById(currentTournoi.getId());
+		return currentTournoi;
 	}
 
 	public void removeEquipeToTournoi(Long aEquipeId) {
 		petanqueService.removeEquipeToTournoi(aEquipeId);
-		refreshTournoi();
 	}
 
 	public Partie marquerLeScoreDeLaPartie(Long aTournoiId, Long aPartieId, boolean isEquipe1Gagnante, String aScore,
@@ -96,9 +97,9 @@ public class TournoiFSImpl implements TournoiFS {
 	}
 
 	@Override
-	public Tournoi addEquipeToTournoi(EquipeModel equipe) {
+	public Tournoi addEquipeToTournoi(Equipe equipe) {
 
-		Equipe addedEquipe = addEquipeToTournoi(currentTournoi.getId(), equipe.map());
+		Equipe addedEquipe = addEquipeToTournoi(currentTournoi.getId(), equipe);
 		actionMementoFS.ajouterAction(new Action() {
 			private Long equipeId = addedEquipe.getId();
 
@@ -110,7 +111,20 @@ public class TournoiFSImpl implements TournoiFS {
 
 			@Override
 			public void execute() {
-				equipeId = addEquipeToTournoi(currentTournoi.getId(), equipe.map()).getId();
+				equipe.setId(null);
+				equipe.getJoueurs().stream().forEach(j -> j.setId(null));
+				equipeId = addEquipeToTournoi(currentTournoi.getId(), equipe).getId();
+
+			}
+
+			@Override
+			public String idExecute() {
+				return "AddTeam-" + equipeId;
+			}
+
+			@Override
+			public String idRollback() {
+				return "RemoveTeam-" + equipeId;
 
 			}
 		});
@@ -141,6 +155,58 @@ public class TournoiFSImpl implements TournoiFS {
 		return currentTournoi.getEquipes().parallelStream().filter(e -> {
 			return e.isInscritDansLeComplementaire();
 		}).map(mapperEquipeToModel).collect(Collectors.<EquipeModel> toList());
+	}
+
+	@Override
+	public Tournoi tirageAuSortPrincipal() {
+		currentTournoi = tirageAuSort(currentTournoi.getId(), true);
+		return currentTournoi;
+
+	}
+
+	@Override
+	public Tournoi tirageAuSortComplementaire() {
+		currentTournoi = tirageAuSort(currentTournoi.getId(), false);
+		return currentTournoi;
+
+	}
+
+	@Override
+	public Tournoi removeEquipeFromTournoi(final Equipe equipeToAdd) {
+		removeEquipeToTournoi(equipeToAdd.getId());
+		actionMementoFS.ajouterAction(new AbstractAction() {
+			private Long equipeId = equipeToAdd.getId();
+			private Equipe equipe = equipeToAdd;
+
+			@Override
+			public void rollback() {
+				Equipe toAdd = equipe;
+				toAdd.setId(null);
+				toAdd.getJoueurs().stream().forEach(j -> j.setId(null));
+				equipe = addEquipeToTournoi(currentTournoi.getId(), toAdd);
+				equipeId = equipe.getId();
+
+			}
+
+			@Override
+			public void execute() {
+				removeEquipeToTournoi(equipeId);
+
+			}
+
+			@Override
+			public String idExecute() {
+				return "RemoveTeam-" + equipeId;
+			}
+
+			@Override
+			public String idRollback() {
+				return "AddTeam-" + equipeId;
+			}
+
+		});
+		return refreshTournoi();
+
 	}
 
 }

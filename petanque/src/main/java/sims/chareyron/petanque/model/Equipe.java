@@ -1,8 +1,8 @@
 package sims.chareyron.petanque.model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
@@ -37,7 +38,8 @@ public class Equipe extends GenericPE {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@BatchSize(size = 2)
 	@Fetch(FetchMode.JOIN)
-	private Set<Joueur> joueurs = new HashSet<Joueur>();
+	@OrderColumn(name = "list_index")
+	private List<Joueur> joueurs = new ArrayList<Joueur>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,11 +73,11 @@ public class Equipe extends GenericPE {
 		this.inscritDansLeComplementaire = inscritDansLeComplementaire;
 	}
 
-	public Set<Joueur> getJoueurs() {
+	public List<Joueur> getJoueurs() {
 		return joueurs;
 	}
 
-	public void setJoueurs(Set<Joueur> joueurs) {
+	public void setJoueurs(List<Joueur> joueurs) {
 		this.joueurs = joueurs;
 	}
 

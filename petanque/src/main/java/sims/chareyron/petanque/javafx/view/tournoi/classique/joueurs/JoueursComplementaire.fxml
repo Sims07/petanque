@@ -6,21 +6,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<VBox fx:id="mainPanel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursComplementaireView">
+<VBox fx:id="mainPanel" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursComplementaireView">
    <children>
       <AnchorPane>
          <children>
-            <TitledPane contentDisplay="CENTER" text="Ajouter une équipe" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TitledPane contentDisplay="CENTER" text="Ajouter une équipe" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                <content>
                   <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
-                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="64.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="10.0" prefWidth="64.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
                     </rowConstraints>
                      <children>
                         <Label text="Joueur 1">
@@ -85,5 +85,13 @@
             </GridPane>
          </children>
       </AnchorPane>
+      <BorderPane prefHeight="50.0" prefWidth="200.0">
+         <top>
+            <Button fx:id="tirageAuSortButton" mnemonicParsing="false" text="Tirage au sort" BorderPane.alignment="CENTER" />
+         </top>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </BorderPane>
    </children>
 </VBox>

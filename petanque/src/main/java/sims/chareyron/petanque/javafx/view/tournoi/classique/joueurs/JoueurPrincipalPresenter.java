@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javafx.collections.ObservableList;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
+import sims.chareyron.petanque.model.Tournoi;
 
 @Component
 public class JoueurPrincipalPresenter extends AbstractJoueursPresenter {
@@ -28,6 +29,13 @@ public class JoueurPrincipalPresenter extends AbstractJoueursPresenter {
 		List<EquipeModel> equipeModels = tournoiFS.getEquipesPrincipal();
 		equipes.clear();
 		equipes.addAll(equipeModels);
+		tirageAuSortEnable.set(!equipeModels.isEmpty());
+	}
+
+	@Override
+	public void onTirageAuSortClicked() {
+		Tournoi tournoi = tournoiFS.tirageAuSortPrincipal();
+		tirageAuSortEnable.set(!tournoi.getPrincipal().isTirageAuSortFait());
 	}
 
 }

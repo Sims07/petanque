@@ -1,5 +1,6 @@
 package sims.chareyron.petanque.javafx.controller;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ public class ActionMementoFSImpl implements ActionMementoFS {
 	public void executerPreviousAction() {
 		Action actionPrecedente = actionPrecedentes.pop();
 		actionPrecedente.rollback();
+		// enlever toutes les actions avec le même id
+		String idRollBack = actionPrecedente.idRollback();
+		Object[] actionsToRemove = actionPrecedentes.stream().filter(a -> {
+			return a.idRollback().equals(idRollBack);
+		}).toArray();
+		actionPrecedentes.removeAll(Arrays.asList(actionsToRemove));
+
 		actionSuivantes.add(actionPrecedente);
 		resfreshState();
 		publisher.publishEvent(new PetanqueEvent<PreviousEvent>(this));
@@ -47,6 +55,14 @@ public class ActionMementoFSImpl implements ActionMementoFS {
 	public void executerNextAction() {
 		Action actionSuivante = actionSuivantes.pop();
 		actionSuivante.execute();
+
+		// enlever toutes les actions avec le même id
+		String idExecute = actionSuivante.idExecute();
+		Object[] actionsToRemove = actionPrecedentes.stream().filter(a -> {
+			return a.idRollback().equals(idExecute);
+		}).toArray();
+		actionSuivantes.removeAll(Arrays.asList(actionsToRemove));
+
 		actionPrecedentes.add(actionSuivante);
 		resfreshState();
 		publisher.publishEvent(new PetanqueEvent<NextEvent>(this));

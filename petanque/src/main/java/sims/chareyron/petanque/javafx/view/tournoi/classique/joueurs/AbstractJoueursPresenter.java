@@ -3,6 +3,8 @@ package sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
@@ -20,6 +22,7 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 	private ObservableList<EquipeModel> equipes = FXCollections.observableArrayList();
 
 	protected EquipeModel equipeModel;
+	protected BooleanProperty tirageAuSortEnable;
 
 	@Autowired
 	TournoiFS tournoiFS;
@@ -27,6 +30,7 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 	public AbstractJoueursPresenter(JoueursView view) {
 		super();
 		this.view = view;
+		tirageAuSortEnable = new SimpleBooleanProperty();
 	}
 
 	@EventListener
@@ -48,6 +52,7 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 		getView().setViewBindings();
 		getView().setEquipe(equipeModel);
 		getView().setUiHandlers(this);
+		getView().setTirageAuSortEnable(tirageAuSortEnable);
 	}
 
 	abstract void chargerLesEquipes(ObservableList<EquipeModel> equipes);
@@ -56,7 +61,13 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 
 	@Override
 	public void onAjouterEquipeClicked() {
-		tournoiFS.addEquipeToTournoi(equipeModel);
+		tournoiFS.addEquipeToTournoi(equipeModel.map());
+		chargerLesEquipes(equipes);
+	}
+
+	@Override
+	public void onDeleteEquipeClicked(EquipeModel equipe) {
+		tournoiFS.removeEquipeFromTournoi(equipe.map());
 		chargerLesEquipes(equipes);
 	}
 

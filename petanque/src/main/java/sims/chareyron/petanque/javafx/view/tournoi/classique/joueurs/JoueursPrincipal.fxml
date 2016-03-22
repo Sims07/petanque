@@ -6,12 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<VBox fx:id="mainPanel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursPrincipalView"
-  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<VBox fx:id="mainPanel" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursPrincipalView">
    <children>
       <AnchorPane>
          <children>
-            <TitledPane contentDisplay="CENTER" text="Ajouter une équipe" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TitledPane contentDisplay="CENTER" text="Ajouter une équipe" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
                <content>
                   <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
@@ -86,5 +85,13 @@
             </GridPane>
          </children>
       </AnchorPane>
+      <BorderPane prefHeight="50.0" prefWidth="200.0">
+         <top>
+            <Button fx:id="tirageAuSortButton" mnemonicParsing="false" onAction="#onTirageAuSortClicked" text="Tirage au sort" BorderPane.alignment="CENTER" />
+         </top>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </BorderPane>
    </children>
 </VBox>
