@@ -67,9 +67,9 @@
                                     <TableView fx:id="equipeTable" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                                      
                                       <columns>
+                                        <TableColumn fx:id="numeroColumn" prefWidth="75.0" text="Numéro" />
                                         <TableColumn fx:id="joueur1Column" prefWidth="75.0" text="Joueur 1" />
                                         <TableColumn fx:id="joueur2Column" prefWidth="75.0" text="Joueur 2" />
-                                          <TableColumn prefWidth="75.0" text="Actions" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -87,7 +87,7 @@
       </AnchorPane>
       <BorderPane prefHeight="50.0" prefWidth="200.0">
          <top>
-            <Button fx:id="tirageAuSortButton" mnemonicParsing="false" text="Tirage au sort" BorderPane.alignment="CENTER" />
+            <Button fx:id="tirageAuSortButton" mnemonicParsing="false" onAction="#onTirageAuSortClicked" text="Tirage au sort" BorderPane.alignment="CENTER" />
          </top>
          <padding>
             <Insets top="5.0" />

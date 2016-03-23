@@ -11,6 +11,7 @@ public class EquipeModel {
 	private boolean inscritComplementaire;
 	private StringProperty joueur1;
 	private StringProperty joueur2;
+	private int numero;
 
 	public EquipeModel() {
 		super();
@@ -58,9 +59,18 @@ public class EquipeModel {
 		this.id = id;
 	}
 
+	public Integer getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+
 	public Equipe map() {
 		Equipe equipe = new Equipe();
 		equipe.setId(id);
+		equipe.setNumero(numero);
 		equipe.setInscritDansLeComplementaire(inscritComplementaire);
 		equipe.setInscritDansLePrincipal(inscritPrincipal);
 		// creer joueur 1

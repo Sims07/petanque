@@ -6,7 +6,7 @@ public interface Action {
 
 	String idRollback();
 
-	void execute();
+	void execute() throws Exception;
 
-	void rollback();
+	void rollback() throws Exception;
 }

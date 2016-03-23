@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
@@ -42,6 +43,9 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 	TableView<EquipeModel> equipeTable;
 
 	@FXML
+	TableColumn<EquipeModel, Integer> numeroColumn;
+
+	@FXML
 	TableColumn<EquipeModel, String> joueur1Column;
 
 	@FXML
@@ -56,6 +60,7 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 	public void setViewBindings() {
 		initContextMenu();
 		// Initialize the person table with the two columns.
+		numeroColumn.setCellValueFactory(new PropertyValueFactory<EquipeModel, Integer>("numero"));
 		joueur1Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur1());
 		joueur2Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur2());
 		mainPanel.prefWidthProperty().bind(((Pane) mainPanel.getParent()).widthProperty());

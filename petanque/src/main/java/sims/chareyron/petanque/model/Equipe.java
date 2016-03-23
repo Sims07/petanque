@@ -100,6 +100,7 @@ public class Equipe extends GenericPE {
 	public EquipeModel map() {
 		EquipeModel equipeModel = new EquipeModel();
 		equipeModel.setId(id);
+		equipeModel.setNumero(numero);
 		equipeModel.setInscritComplementaire(inscritDansLeComplementaire);
 		equipeModel.setInscritPrincipal(inscritDansLePrincipal);
 		Iterator<Joueur> iterator = joueurs.iterator();
