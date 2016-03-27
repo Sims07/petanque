@@ -26,7 +26,7 @@ public class MainPresenter extends AbstractPresenter<MyView> {
 
 	@Autowired
 	public MainPresenter(MyView view, HeaderPresenter headerPresenter, PlaceManager placeManager) {
-		super();
+		super(view);
 		this.view = view;
 		this.placeManager = placeManager;
 		this.headerPresenter = headerPresenter;

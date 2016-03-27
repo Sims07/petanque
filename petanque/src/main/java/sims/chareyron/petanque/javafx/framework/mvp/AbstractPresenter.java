@@ -8,6 +8,11 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 
 	protected V view;
 
+	public AbstractPresenter(V view) {
+		super();
+		this.view = view;
+	}
+
 	@SuppressWarnings("rawtypes")
 	private List<Presenter<?>> childrenPresenters = new ArrayList<>();
 

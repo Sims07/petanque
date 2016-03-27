@@ -28,7 +28,7 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 	TournoiFS tournoiFS;
 
 	public AbstractJoueursPresenter(JoueursView view) {
-		super();
+		super(view);
 		this.view = view;
 		tirageAuSortEnable = new SimpleBooleanProperty();
 	}

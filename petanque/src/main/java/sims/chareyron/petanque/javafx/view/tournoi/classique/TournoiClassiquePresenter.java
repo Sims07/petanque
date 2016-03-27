@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javafx.stage.Stage;
@@ -12,11 +13,13 @@ import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
 import sims.chareyron.petanque.javafx.framework.mvp.ViewWithUiHandlers;
+import sims.chareyron.petanque.javafx.model.TirageAuSortEvent;
 import sims.chareyron.petanque.javafx.view.MainPresenter;
 import sims.chareyron.petanque.javafx.view.Token;
 import sims.chareyron.petanque.javafx.view.tournoi.TournoiUiHandlers;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueurPrincipalPresenter;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursComplementairePresenter;
+import sims.chareyron.petanque.javafx.view.tournoi.classique.score.PrincipalScorePresenter;
 
 @Component
 public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiquePresenter.MyView>
@@ -32,18 +35,28 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 		void setViewBindings(Stage stage);
 	}
 
-	private PlaceManager placeManager;
-	private JoueursComplementairePresenter joueursComplementairePresenter;
-	private JoueurPrincipalPresenter joueurPrincipalPresenter;
+	private final PlaceManager placeManager;
+	private final JoueursComplementairePresenter joueursComplementairePresenter;
+	private final JoueurPrincipalPresenter joueurPrincipalPresenter;
+	private final PrincipalScorePresenter principalScorePresenter;
 
 	@Autowired
 	public TournoiClassiquePresenter(MyView view, JoueurPrincipalPresenter joueurPrincipalPresenter,
-			JoueursComplementairePresenter joueursComplementairePresenter, PlaceManager placeManager) {
-		super();
+			JoueursComplementairePresenter joueursComplementairePresenter,
+			PrincipalScorePresenter principalScorePresenter, PlaceManager placeManager) {
+		super(view);
 		this.view = view;
 		this.placeManager = placeManager;
 		this.joueurPrincipalPresenter = joueurPrincipalPresenter;
 		this.joueursComplementairePresenter = joueursComplementairePresenter;
+		this.principalScorePresenter = principalScorePresenter;
+	}
+
+	@EventListener
+	public void onTirageAuSortDone(TirageAuSortEvent event) {
+		if (event.isPrincipal()) {
+			principalScorePresenter.setSousTournoi(event.getSousTournoi());
+		}
 	}
 
 	@Override
@@ -57,6 +70,7 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 		getView().setViewBindings(placeManager.getStage());
 		setInSlot(COMPLEMENTAIRE_JOUEUR_SLOT, joueursComplementairePresenter);
 		setInSlot(PRINCIPAL_JOUEUR_SLOT, joueurPrincipalPresenter);
+		setInSlot(PRINCIPAL_TOURNOI_SLOT, principalScorePresenter);
 	}
 
 	public Slot revealedInSlot() {

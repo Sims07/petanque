@@ -32,7 +32,7 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 
 	@Autowired
 	public HeaderPresenter(MyView view, PlaceManager placeManager) {
-		super();
+		super(view);
 		this.view = view;
 		this.placeManager = placeManager;
 	}

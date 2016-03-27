@@ -69,7 +69,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 		return this.applicationContext.getBean(type);
 	}
 
-	FXMLLoader loadSynchronously(URL resource, ResourceBundle bundle) throws IllegalStateException {
+	protected FXMLLoader loadSynchronously(URL resource, ResourceBundle bundle) throws IllegalStateException {
 
 		FXMLLoader loader = new FXMLLoader(resource, bundle);
 		loader.setControllerFactory(this::createControllerForType);

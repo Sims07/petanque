@@ -6,11 +6,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import sims.chareyron.petanque.javafx.model.AbstractAction;
 import sims.chareyron.petanque.javafx.model.Action;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
+import sims.chareyron.petanque.javafx.model.TirageAuSortEvent;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.Partition;
@@ -20,6 +22,8 @@ import sims.chareyron.petanque.service.PetanqueService;
 
 @Service
 public class TournoiFSImpl implements TournoiFS {
+	@Autowired
+	private ApplicationEventPublisher publisher;
 
 	private Tournoi currentTournoi;
 
@@ -52,8 +56,8 @@ public class TournoiFSImpl implements TournoiFS {
 	}
 
 	public Tournoi tirageAuSort(Long tournoiId, boolean principal) {
-		currentTournoi = petanqueService.tirageAuSort(tournoiId, principal);
-		return currentTournoi;
+		petanqueService.tirageAuSort(tournoiId, principal);
+		return refreshTournoi();
 	}
 
 	public List<Partition> buildPartitions(int nbEquipes) {
@@ -160,6 +164,7 @@ public class TournoiFSImpl implements TournoiFS {
 	@Override
 	public Tournoi tirageAuSortPrincipal() {
 		currentTournoi = tirageAuSort(currentTournoi.getId(), true);
+		publisher.publishEvent(new TirageAuSortEvent(this, true, currentTournoi.getPrincipal()));
 		return currentTournoi;
 
 	}

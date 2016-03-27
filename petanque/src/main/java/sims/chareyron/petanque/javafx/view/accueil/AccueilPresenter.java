@@ -17,7 +17,7 @@ public class AccueilPresenter extends AbstractPresenter<AccueilPresenter.MyView>
 
 	@Autowired
 	public AccueilPresenter(MyView view) {
-		super();
+		super(view);
 		this.view = view;
 	}
 
