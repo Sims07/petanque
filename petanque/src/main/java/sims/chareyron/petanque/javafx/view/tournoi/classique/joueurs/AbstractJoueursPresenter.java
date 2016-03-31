@@ -73,7 +73,7 @@ public abstract class AbstractJoueursPresenter extends AbstractWidgetPresenter<I
 
 	@Override
 	public void onReveal() {
-		// TODO Auto-generated method stub
-
+		chargerLesEquipes(equipes);
+		getView().setEquipes(equipes);
 	}
 }

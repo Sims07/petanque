@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javafx.stage.Stage;
+import sims.chareyron.petanque.javafx.controller.TournoiFS;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractPresenter;
 import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
@@ -20,6 +21,7 @@ import sims.chareyron.petanque.javafx.view.tournoi.TournoiUiHandlers;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueurPrincipalPresenter;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursComplementairePresenter;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.score.PrincipalScorePresenter;
+import sims.chareyron.petanque.model.Tournoi;
 
 @Component
 public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiquePresenter.MyView>
@@ -36,6 +38,8 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 	}
 
 	private final PlaceManager placeManager;
+	@Autowired
+	private TournoiFS tournoiFS;
 	private final JoueursComplementairePresenter joueursComplementairePresenter;
 	private final JoueurPrincipalPresenter joueurPrincipalPresenter;
 	private final PrincipalScorePresenter principalScorePresenter;
@@ -54,7 +58,8 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 
 	@EventListener
 	public void onTirageAuSortDone(TirageAuSortEvent event) {
-		if (event.isPrincipal()) {
+
+		if (isBound() && event.isPrincipal()) {
 			principalScorePresenter.setSousTournoi(event.getSousTournoi());
 		}
 	}
@@ -71,6 +76,8 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 		setInSlot(COMPLEMENTAIRE_JOUEUR_SLOT, joueursComplementairePresenter);
 		setInSlot(PRINCIPAL_JOUEUR_SLOT, joueurPrincipalPresenter);
 		setInSlot(PRINCIPAL_TOURNOI_SLOT, principalScorePresenter);
+		Tournoi tournoi = tournoiFS.getLoadedTournoi();
+		principalScorePresenter.setSousTournoi(tournoi.getPrincipal());
 	}
 
 	public Slot revealedInSlot() {
@@ -86,6 +93,7 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 
 	@Override
 	public void onReveal() {
-		System.out.println("Main presenter on start");
+		Tournoi tournoi = tournoiFS.getLoadedTournoi();
+		principalScorePresenter.setSousTournoi(tournoi.getPrincipal());
 	}
 }

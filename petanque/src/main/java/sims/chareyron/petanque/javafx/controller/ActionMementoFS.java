@@ -14,4 +14,6 @@ public interface ActionMementoFS {
 	void executerPreviousAction();
 
 	void executerNextAction();
+
+	void clear();
 }

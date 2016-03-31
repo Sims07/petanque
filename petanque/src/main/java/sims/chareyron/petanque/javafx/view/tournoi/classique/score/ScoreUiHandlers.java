@@ -4,4 +4,6 @@ import sims.chareyron.petanque.javafx.framework.mvp.UiHandlers;
 
 public interface ScoreUiHandlers extends UiHandlers {
 
+	void onTourClicked(int currentPageIndex);
+
 }

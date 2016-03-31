@@ -8,4 +8,6 @@ public interface IScoreView extends View, ViewWithUiHandlers<ScoreUiHandlers> {
 
 	void setSousTournoi(SousTournoi parties);
 
+	void setTour(int currentPageIndex, SousTournoi currentSousTournoi);
+
 }

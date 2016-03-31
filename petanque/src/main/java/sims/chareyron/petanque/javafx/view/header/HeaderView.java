@@ -1,11 +1,14 @@
 package sims.chareyron.petanque.javafx.view.header;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
@@ -13,12 +16,16 @@ import javafx.stage.Stage;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
+import sims.chareyron.petanque.model.Tournoi;
 
 @Component
 public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> implements HeaderPresenter.MyView {
 
 	@FXML
 	MenuBar menuBar;
+
+	@FXML
+	Menu menuCharger;
 
 	@FXML
 	MenuItem previous;
@@ -45,8 +52,8 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> imp
 		getUiHandlers().onTournoiClassiqueCreationClicked();
 	}
 
-	public void onTournoiLoadedClicked() {
-		getUiHandlers().onTournoiLoadedClicked();
+	public void onTournoiLoadedClicked(Long id) {
+		getUiHandlers().onTournoiLoadedClicked(id);
 	}
 
 	@Override
@@ -67,6 +74,20 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> imp
 
 	public void onSuivantClicked() {
 		getUiHandlers().onNextClicked();
+	}
+
+	@Override
+	public void setListeTournoi(List<Tournoi> tournois) {
+		menuCharger.getItems().clear();
+		tournois.stream().forEach(t -> {
+			MenuItem tournoi = new MenuItem(t.getNom());
+			tournoi.setId(t.getId().toString());
+			tournoi.setOnAction(e -> {
+				onTournoiLoadedClicked(t.getId());
+			});
+			menuCharger.getItems().add(tournoi);
+		});
+
 	}
 
 }

@@ -21,4 +21,10 @@ public interface TournoiFS {
 	Tournoi tirageAuSortPrincipal();
 
 	Tournoi tirageAuSortComplementaire();
+
+	List<Tournoi> getAllSavedTournoi();
+
+	Tournoi loadTournoiById(Long id);
+
+	Tournoi getLoadedTournoi();
 }

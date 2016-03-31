@@ -5,9 +5,9 @@ import sims.chareyron.petanque.javafx.framework.mvp.UiHandlers;
 public interface HeaderUiHandlers extends UiHandlers {
 	void onTournoiClassiqueCreationClicked();
 
-	void onTournoiLoadedClicked();
-
 	void onPreviousClicked();
 
 	void onNextClicked();
+
+	void onTournoiLoadedClicked(Long idTournoi);
 }

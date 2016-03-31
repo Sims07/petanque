@@ -13,6 +13,8 @@ import sims.chareyron.petanque.javafx.model.AbstractAction;
 import sims.chareyron.petanque.javafx.model.Action;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
 import sims.chareyron.petanque.javafx.model.TirageAuSortEvent;
+import sims.chareyron.petanque.javafx.model.TournoiCreatedEvent;
+import sims.chareyron.petanque.javafx.model.TournoiLoadedEvent;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.Partition;
@@ -35,6 +37,7 @@ public class TournoiFSImpl implements TournoiFS {
 
 	public Tournoi createTournoi(Tournoi aTournoi) {
 		currentTournoi = petanqueService.createTournoi(aTournoi);
+		publisher.publishEvent(new TournoiCreatedEvent(this, currentTournoi));
 		return currentTournoi;
 	}
 
@@ -163,6 +166,7 @@ public class TournoiFSImpl implements TournoiFS {
 
 	@Override
 	public Tournoi tirageAuSortPrincipal() {
+		actionMementoFS.clear();
 		currentTournoi = tirageAuSort(currentTournoi.getId(), true);
 		publisher.publishEvent(new TirageAuSortEvent(this, true, currentTournoi.getPrincipal()));
 		return currentTournoi;
@@ -171,6 +175,7 @@ public class TournoiFSImpl implements TournoiFS {
 
 	@Override
 	public Tournoi tirageAuSortComplementaire() {
+		actionMementoFS.clear();
 		currentTournoi = tirageAuSort(currentTournoi.getId(), false);
 		return currentTournoi;
 
@@ -212,6 +217,24 @@ public class TournoiFSImpl implements TournoiFS {
 		});
 		return refreshTournoi();
 
+	}
+
+	@Override
+	public List<Tournoi> getAllSavedTournoi() {
+		return getAllTournoi();
+	}
+
+	@Override
+	public Tournoi loadTournoiById(Long id) {
+		actionMementoFS.clear();
+		currentTournoi = getTournoiById(id);
+		publisher.publishEvent(new TournoiLoadedEvent(this, currentTournoi));
+		return currentTournoi;
+	}
+
+	@Override
+	public Tournoi getLoadedTournoi() {
+		return currentTournoi;
 	}
 
 }

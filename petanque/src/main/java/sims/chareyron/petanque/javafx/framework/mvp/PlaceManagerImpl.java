@@ -36,7 +36,7 @@ public class PlaceManagerImpl implements PlaceManager {
 		Presenter<? extends View> presenterWithToken = presenters.parallelStream()
 				.filter(p -> p.getToken() != null && p.getToken().equals(token)).findFirst().get();
 		Presenter<?> parentPresenter = null;
-		if (!boundPresentersMap.containsKey(presenterWithToken)) {
+		if (!presenterWithToken.isBound()) {
 			boundPresentersMap.put(presenterWithToken, true);
 			parentPresenter = onBind(presenterWithToken);
 
@@ -50,8 +50,8 @@ public class PlaceManagerImpl implements PlaceManager {
 
 	private Presenter<?> onReveal(Presenter<? extends View> presenterToReveal) {
 
-		// appeler on bind sur tous ses enfants
-		presenterToReveal.childrenPresenter().forEach(p -> p.onReveal());
+		// appeler on reveal sur tous ses enfants
+		presenterToReveal.childrenPresenter().forEach(p -> p.reveal());
 		// reveler dans le parent
 		Slot revealedInSlot = presenterToReveal.revealedInSlot();
 		// trouver ou se trouve le slot
@@ -61,11 +61,11 @@ public class PlaceManagerImpl implements PlaceManager {
 		// initialiser la vue java FX
 		((AbstractFxmlView) parentPresenter.getView()).getParent();
 		// appeler on reveal sur tout ses enfants
-		parentPresenter.onReveal();
-		parentPresenter.childrenPresenter().forEach(p -> p.onReveal());
+		parentPresenter.reveal();
+		parentPresenter.childrenPresenter().forEach(p -> p.reveal());
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToReveal.getView());
 		// bind du presenter courant
-		presenterToReveal.onReveal();
+		presenterToReveal.reveal();
 		return parentPresenter;
 
 	}
@@ -81,20 +81,26 @@ public class PlaceManagerImpl implements PlaceManager {
 		}).findFirst().get();
 		((AbstractFxmlView) parentPresenter.getView()).getParent();
 		// appeler on bind sur tout ses enfants
-		parentPresenter.onBind();
+		parentPresenter.bind();
 		parentPresenter.childrenPresenter().forEach(p -> {
 			// init java fx view
 			((AbstractFxmlView) p.getView()).getParent();
-			p.onBind();
+			if (!p.isBound()) {
+				p.bind();
+			}
 		});
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToBind.getView());
 		// bind du presenter courant
-		presenterToBind.onBind();
+		if (!presenterToBind.isBound()) {
+			presenterToBind.bind();
+		}
 		// appeler on bind sur tous ses enfants
 		presenterToBind.childrenPresenter().forEach(p -> {
 			// init java fx view
 			((AbstractFxmlView) p.getView()).getParent();
-			p.onBind();
+			if (!p.isBound()) {
+				p.bind();
+			}
 		});
 		return parentPresenter;
 	}

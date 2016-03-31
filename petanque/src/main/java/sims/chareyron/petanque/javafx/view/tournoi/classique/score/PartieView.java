@@ -38,11 +38,13 @@ public class PartieView extends AbstractFxmlView {
 
 	public void setPartie(Partie apartie, String index) {
 		partie.setText(String.format("Partie %s", index));
-		List<Joueur> joueursEq1 = apartie.getEquipe1().getJoueurs();
-		List<Joueur> joueursEq2 = apartie.getEquipe2().getJoueurs();
-		equipe1.setText(String.format("%s-%s", apartie.getEquipe1().getNumero(),
+		Equipe equipeModel1 = apartie.getEquipe1() != null ? apartie.getEquipe1() : emptyEquipe();
+		Equipe equipeModel2 = apartie.getEquipe2() != null ? apartie.getEquipe2() : emptyEquipe();
+		List<Joueur> joueursEq1 = equipeModel1.getJoueurs();
+		List<Joueur> joueursEq2 = equipeModel2.getJoueurs();
+		equipe1.setText(String.format("%s-%s", equipeModel1.getNumero(),
 				joueursEq1.isEmpty() ? "-" : joueursEq1.get(0).getNom()));
-		equipe2.setText(String.format("%s-%s", apartie.getEquipe2().getNumero(),
+		equipe2.setText(String.format("%s-%s", equipeModel2.getNumero(),
 				joueursEq2.isEmpty() ? "-" : joueursEq2.get(0).getNom()));
 		String style = "-fx-border-radius:5;";
 		if (apartie.isEnAttente()) {
@@ -60,6 +62,20 @@ public class PartieView extends AbstractFxmlView {
 		}
 		partie.setStyle(style);
 
+	}
+
+	private Equipe emptyEquipe() {
+		Equipe equipe = new Equipe();
+		equipe.setNumero(-1);
+		equipe.getJoueurs().add(emptyJoueur());
+		equipe.getJoueurs().add(emptyJoueur());
+		return equipe;
+	}
+
+	private Joueur emptyJoueur() {
+		Joueur j = new Joueur();
+		j.setNom("-");
+		return j;
 	}
 
 	@Override

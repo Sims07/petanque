@@ -28,7 +28,8 @@ public class JoueursComplementairePresenter extends AbstractJoueursPresenter {
 		List<EquipeModel> equipeModels = tournoiFS.getEquipesComplementaire();
 		equipes.clear();
 		equipes.addAll(equipeModels);
-		tirageAuSortEnable.set(!equipeModels.isEmpty());
+		tirageAuSortEnable
+				.set(!tournoiFS.getLoadedTournoi().getComplementaire().isTirageAuSortFait() && !equipeModels.isEmpty());
 
 	}
 

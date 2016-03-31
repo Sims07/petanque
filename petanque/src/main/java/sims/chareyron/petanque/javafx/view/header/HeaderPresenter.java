@@ -1,5 +1,7 @@
 package sims.chareyron.petanque.javafx.view.header;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
 import sims.chareyron.petanque.javafx.framework.mvp.ViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.view.Token;
+import sims.chareyron.petanque.model.Tournoi;
 
 @Component
 public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyView> implements HeaderUiHandlers {
@@ -28,6 +31,8 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 		void setPreviousEnabled(BooleanProperty enable);
 
 		void setNextEnabled(BooleanProperty enable);
+
+		void setListeTournoi(List<Tournoi> tournois);
 	}
 
 	@Autowired
@@ -43,11 +48,12 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 		getView().setViewBindings(placeManager.getStage());
 		getView().setNextEnabled(actionMementoFS.isNextEnabled());
 		getView().setPreviousEnabled(actionMementoFS.isPreviousEnabled());
+		getView().setListeTournoi(tournoiFS.getAllSavedTournoi());
 	}
 
 	@Override
 	public void onReveal() {
-
+		getView().setListeTournoi(tournoiFS.getAllSavedTournoi());
 	}
 
 	@Override
@@ -69,8 +75,9 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 	}
 
 	@Override
-	public void onTournoiLoadedClicked() {
-		// TODO Auto-generated method stub
+	public void onTournoiLoadedClicked(Long idTournoi) {
+		tournoiFS.loadTournoiById(idTournoi);
+		placeManager.revealPlace(Token.TOKEN_TOURNOI_CLASSIQUE);
 
 	}
 

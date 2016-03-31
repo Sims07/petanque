@@ -24,6 +24,12 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 	}
 
 	@Override
+	public void onTourClicked(int currentPageIndex) {
+		getView().setTour(currentPageIndex, currentSousTournoi);
+
+	}
+
+	@Override
 	public void onBind() {
 		getView().setUiHandlers(this);
 	}

@@ -11,7 +11,7 @@
       <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="scoreTitleLabel" alignment="CENTER" contentDisplay="CENTER" text="Label" textAlignment="CENTER" />
-            <TitledPane animated="false" text="Trouver une partie">
+            <TitledPane fx:id="equipesForm" animated="false" minHeight="120.0" text="Trouver une partie">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
@@ -22,7 +22,6 @@
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
@@ -38,12 +37,12 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </TitledPane>
-            <TitledPane text="Parties">
+            <TitledPane fx:id="partiesForm" maxHeight="1.7976931348623157E308" text="Parties">
                <content>
                   <VBox>
                      <children>
-                        <Pagination />
-                        <ScrollPane fx:id="partiesPanel" fitToHeight="true" fitToWidth="true"  VBox.vgrow="SOMETIMES" />
+                        <Pagination fx:id="tours" style="-fx-arrows-visible: false; -fx-page-information-visible: false;" />
+                        <ScrollPane fx:id="partiesPanel" fitToHeight="true" fitToWidth="true" maxHeight="500.0" VBox.vgrow="SOMETIMES" />
                      </children>
                   </VBox>
                </content>

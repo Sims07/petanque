@@ -92,4 +92,13 @@ public class ActionMementoFSImpl implements ActionMementoFS {
 		return nextEnabled;
 	}
 
+	@Override
+	public void clear() {
+		previousEnabled.set(false);
+		nextEnabled.set(false);
+		actionPrecedentes.clear();
+		actionSuivantes.clear();
+
+	}
+
 }

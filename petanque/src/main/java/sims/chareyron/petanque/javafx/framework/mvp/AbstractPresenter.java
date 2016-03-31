@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractPresenter<V extends View> implements Presenter<V> {
-	private boolean bound = false;
+	protected boolean bound = false;
 
 	protected V view;
 
@@ -38,9 +38,20 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 	}
 
 	@Override
+	public void bind() {
+		onBind();
+		bound = true;
+
+	}
+
+	@Override
 	public void reveal() {
 		onReveal();
 
+	}
+
+	public boolean isBound() {
+		return bound;
 	}
 
 }

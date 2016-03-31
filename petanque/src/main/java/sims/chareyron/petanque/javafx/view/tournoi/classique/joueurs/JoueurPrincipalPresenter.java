@@ -29,7 +29,8 @@ public class JoueurPrincipalPresenter extends AbstractJoueursPresenter {
 		List<EquipeModel> equipeModels = tournoiFS.getEquipesPrincipal();
 		equipes.clear();
 		equipes.addAll(equipeModels);
-		tirageAuSortEnable.set(!equipeModels.isEmpty());
+		tirageAuSortEnable
+				.set(!tournoiFS.getLoadedTournoi().getPrincipal().isTirageAuSortFait() && !equipeModels.isEmpty());
 	}
 
 	@Override

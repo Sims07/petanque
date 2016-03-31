@@ -13,9 +13,13 @@ public interface Presenter<V extends View> {
 
 	void reveal();
 
+	boolean isBound();
+
 	public List<Slot> getSlotList();
 
 	public Slot revealedInSlot();
 
 	List<Presenter<?>> childrenPresenter();
+
+	void bind();
 }
