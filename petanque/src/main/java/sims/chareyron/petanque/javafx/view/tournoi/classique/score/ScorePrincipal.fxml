@@ -42,7 +42,10 @@
                   <VBox>
                      <children>
                         <Pagination fx:id="tours" style="-fx-arrows-visible: false; -fx-page-information-visible: false;" />
-                        <ScrollPane fx:id="partiesPanel" fitToHeight="true" fitToWidth="true" maxHeight="500.0" VBox.vgrow="SOMETIMES" />
+                        <ScrollPane fx:id="partiesPanel" fitToHeight="true" fitToWidth="true" maxHeight="500.0" VBox.vgrow="SOMETIMES">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding></ScrollPane>
                      </children>
                   </VBox>
                </content>

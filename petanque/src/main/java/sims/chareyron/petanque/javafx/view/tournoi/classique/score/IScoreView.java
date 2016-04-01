@@ -6,7 +6,7 @@ import sims.chareyron.petanque.model.SousTournoi;
 
 public interface IScoreView extends View, ViewWithUiHandlers<ScoreUiHandlers> {
 
-	void setSousTournoi(SousTournoi parties);
+	void setSousTournoi(SousTournoi ssTournoi, int tourIndex);
 
 	void setTour(int currentPageIndex, SousTournoi currentSousTournoi);
 

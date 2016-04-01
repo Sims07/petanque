@@ -37,7 +37,7 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 	protected javafx.scene.control.ScrollPane partiesPanel;
 
 	@Override
-	public void setSousTournoi(SousTournoi ssTournoi) {
+	public void setSousTournoi(SousTournoi ssTournoi, int tourIndex) {
 
 		VBox parties = new VBox();
 		boolean equipeVisible = true;
@@ -47,7 +47,7 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 			equipeVisible = false;
 			partieVisible = false;
 		} else {
-			int pageIndex = ssTournoi.getActiveNbTour() - 1;
+			int pageIndex = tourIndex;
 			tours.setMaxPageIndicatorCount(ssTournoi.getTours().size());
 			tours.setCurrentPageIndex(pageIndex);
 			displayParties(ssTournoi, parties, pageIndex);
@@ -89,6 +89,7 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 				PartieView partieView = loader.getController();
 				partieView.setPartie(p, String.valueOf(index.getAndIncrement()));
 				parties.getChildren().add(res);
+				partieView.setUiHandlers(getUiHandlers());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
