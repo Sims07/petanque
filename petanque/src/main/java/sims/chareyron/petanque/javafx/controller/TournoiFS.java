@@ -29,5 +29,5 @@ public interface TournoiFS {
 
 	Tournoi getLoadedTournoi();
 
-	Tournoi marquerScorePartie(Partie partie, Equipe equipeGagnante, Long tourId, boolean isPrincipal);
+	Partie marquerScorePartie(Partie partie, Equipe equipeGagnante, Long tourId, boolean isPrincipal);
 }

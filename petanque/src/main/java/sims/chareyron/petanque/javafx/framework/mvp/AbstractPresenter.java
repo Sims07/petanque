@@ -14,7 +14,7 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 	}
 
 	@SuppressWarnings("rawtypes")
-	private List<Presenter<?>> childrenPresenters = new ArrayList<>();
+	protected List<Presenter<?>> childrenPresenters = new ArrayList<>();
 
 	public V getView() {
 		return view;
@@ -30,7 +30,9 @@ public abstract class AbstractPresenter<V extends View> implements Presenter<V> 
 
 	protected void setInSlot(Slot slot, AbstractWidgetPresenter<?> childPresenter) {
 		getView().setInSlot(slot, childPresenter.getView());
-		childrenPresenters.add(childPresenter);
+		if (!childrenPresenters.contains(childPresenter)) {
+			childrenPresenters.add(childPresenter);
+		}
 	}
 
 	public List<Presenter<?>> childrenPresenter() {

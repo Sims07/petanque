@@ -36,6 +36,7 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 	@Override
 	public void onTourClicked(int currentPageIndex) {
 		pageIndex = currentPageIndex;
+		currentSousTournoi = getSousTournoi(tournoiFS.getLoadedTournoi());
 		currentTour = currentSousTournoi.getTours().get(currentPageIndex);
 		getView().setTour(currentPageIndex, currentSousTournoi);
 
@@ -49,10 +50,12 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 
 	@Override
 	public void onGagnantSelected(Partie aPartie, Equipe equipeGagnante) {
+		long b = System.currentTimeMillis();
+		Partie updated = tournoiFS.marquerScorePartie(aPartie, equipeGagnante, currentTour.getId(), isPrincipal());
 
-		Tournoi tournoi = tournoiFS.marquerScorePartie(aPartie, equipeGagnante, currentTour.getId(), isPrincipal());
-		currentSousTournoi = getSousTournoi(tournoi);
-		getView().setSousTournoi(currentSousTournoi, pageIndex);
+		long e = System.currentTimeMillis();
+		System.out.println("scoremarqued:" + (e - b));
+		getView().setScore(updated);
 	}
 
 	protected abstract SousTournoi getSousTournoi(Tournoi tournoi);

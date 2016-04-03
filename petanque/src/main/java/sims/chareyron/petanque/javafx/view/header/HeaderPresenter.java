@@ -76,7 +76,10 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 
 	@Override
 	public void onTournoiLoadedClicked(Long idTournoi) {
+		long b = System.currentTimeMillis();
 		tournoiFS.loadTournoiById(idTournoi);
+		long e = System.currentTimeMillis();
+		System.out.println("loading:" + (e - b));
 		placeManager.revealPlace(Token.TOKEN_TOURNOI_CLASSIQUE);
 
 	}

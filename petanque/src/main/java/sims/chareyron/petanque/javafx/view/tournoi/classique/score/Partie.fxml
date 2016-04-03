@@ -13,23 +13,39 @@
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="50.0" prefWidth="50.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="0.0" prefWidth="70.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="partie" text="Partie" GridPane.rowSpan="2" />
-            <Label fx:id="equipe1" text="Equipe1" GridPane.columnIndex="1" />
-            <Label fx:id="equipe2" text="Equipe 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ChoiceBox fx:id="gagnants" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowSpan="2">
+            <Label fx:id="partie" text="Partie" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
+            <Label fx:id="equipe1" text="Equipe1" GridPane.columnIndex="1">
+               <graphic>
+                  <Label fx:id="numero1" text="numero1" />
+               </graphic>
+               <GridPane.margin>
+                  <Insets top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="equipe2" text="Equipe 2" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <graphic>
+                  <Label fx:id="numero2" text="numero2" />
+               </graphic>
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+            </Label>
+            <ChoiceBox fx:id="gagnants" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowSpan="3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin></ChoiceBox>
+            <Label text="face à" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
          <opaqueInsets>
             <Insets />

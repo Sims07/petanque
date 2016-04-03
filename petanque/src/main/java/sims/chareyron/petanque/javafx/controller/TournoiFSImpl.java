@@ -238,10 +238,11 @@ public class TournoiFSImpl implements TournoiFS {
 	}
 
 	@Override
-	public Tournoi marquerScorePartie(Partie partie, Equipe equipeGagnante, Long tourId, boolean isPrincipal) {
-		marquerLeScoreDeLaPartie(currentTournoi.getId(), partie.getId(),
+	public Partie marquerScorePartie(Partie partie, Equipe equipeGagnante, Long tourId, boolean isPrincipal) {
+		Partie p = marquerLeScoreDeLaPartie(currentTournoi.getId(), partie.getId(),
 				partie.getEquipe1().getNumero() == equipeGagnante.getNumero(), "", tourId, isPrincipal);
-		return refreshTournoi();
+		refreshTournoi();
+		return p;
 	}
 
 }

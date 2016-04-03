@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javafx.scene.Scene;
@@ -33,8 +32,8 @@ public class PlaceManagerImpl implements PlaceManager {
 	}
 
 	@Override
-	@Async
 	public void revealPlace(String token) {
+
 		Presenter<? extends View> presenterWithToken = presenters.parallelStream()
 				.filter(p -> p.getToken() != null && p.getToken().equals(token)).findFirst().get();
 		Presenter<?> parentPresenter = null;

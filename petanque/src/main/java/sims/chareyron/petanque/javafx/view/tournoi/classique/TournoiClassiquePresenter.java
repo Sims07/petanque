@@ -77,6 +77,9 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 		setInSlot(PRINCIPAL_JOUEUR_SLOT, joueurPrincipalPresenter);
 		setInSlot(PRINCIPAL_TOURNOI_SLOT, principalScorePresenter);
 		Tournoi tournoi = tournoiFS.getLoadedTournoi();
+		if (!principalScorePresenter.isBound()) {
+			principalScorePresenter.bind();
+		}
 		principalScorePresenter.setSousTournoi(tournoi.getPrincipal());
 	}
 

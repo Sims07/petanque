@@ -1,6 +1,8 @@
 package sims.chareyron.petanque.javafx.view.tournoi.classique.score;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,6 +17,7 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
+import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tour;
 
@@ -35,32 +38,38 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 
 	@FXML
 	protected javafx.scene.control.ScrollPane partiesPanel;
+	private List<PartieView> partiesDisplay;
 
 	@Override
 	public void setSousTournoi(SousTournoi ssTournoi, int tourIndex) {
 
 		VBox parties = new VBox();
+
 		boolean equipeVisible = true;
 		boolean partieVisible = true;
-		if (ssTournoi.getActiveNbTour() <= 0) {
+		if (tourIndex < 0) {
 			scoreTitleLabel.setText("Tirage au sort non effectué");
 			equipeVisible = false;
 			partieVisible = false;
 		} else {
-			int pageIndex = tourIndex;
+
 			tours.setMaxPageIndicatorCount(ssTournoi.getTours().size());
-			tours.setCurrentPageIndex(pageIndex);
-			displayParties(ssTournoi, parties, pageIndex);
+			tours.setCurrentPageIndex(tourIndex);
+			long b = System.currentTimeMillis();
+			partiesDisplay = displayParties(ssTournoi, parties, tourIndex);
+			long e = System.currentTimeMillis();
+			System.out.println("display:" + (e - b));
 		}
+		partiesPanel.setContent(parties);
 		equipesForm.setVisible(equipeVisible);
 		partiesForm.setVisible(partieVisible);
-		partiesPanel.setContent(parties);
+
 	}
 
 	@Override
 	public void setTour(int currentPageIndex, SousTournoi currentSousTournoi) {
 		VBox parties = new VBox();
-		displayParties(currentSousTournoi, parties, currentPageIndex);
+		partiesDisplay = displayParties(currentSousTournoi, parties, currentPageIndex);
 		partiesPanel.setContent(parties);
 	}
 
@@ -79,7 +88,8 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 		});
 	}
 
-	private void displayParties(SousTournoi ssTournoi, VBox parties, int pageIndex) {
+	private List<PartieView> displayParties(SousTournoi ssTournoi, VBox parties, int pageIndex) {
+		List<PartieView> resl = new ArrayList<>();
 		Tour currentTour = ssTournoi.getTours().get(pageIndex);
 		AtomicInteger index = new AtomicInteger(0);
 		currentTour.getParties().forEach(p -> {
@@ -87,13 +97,23 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("Partie.fxml"));
 				Node res = loader.load();
 				PartieView partieView = loader.getController();
+				partieView.setUiHandlers(getUiHandlers());
 				partieView.setPartie(p, String.valueOf(index.getAndIncrement()));
 				parties.getChildren().add(res);
-				partieView.setUiHandlers(getUiHandlers());
+				resl.add(partieView);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
+		return resl;
 	}
 
+	@Override
+	public void setScore(Partie partie) {
+		PartieView partieViewToUpdate = partiesDisplay.parallelStream().filter(p -> {
+			return p.getPartie().equals(partie);
+		}).findFirst().get();
+		partieViewToUpdate.updatePartie(partie);
+
+	}
 }
