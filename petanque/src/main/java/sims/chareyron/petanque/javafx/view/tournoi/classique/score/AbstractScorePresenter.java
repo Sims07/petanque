@@ -17,7 +17,7 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 	protected TournoiFS tournoiFS;
 	protected SousTournoi currentSousTournoi;
 	protected Tour currentTour;
-	protected int pageIndex;
+	protected int pageIndex = -1;
 
 	public AbstractScorePresenter(IScoreView view) {
 		super(view);
@@ -29,6 +29,8 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 		if (currentTour == null && currentSousTournoi.getActiveNbTour() > 0) {
 			pageIndex = currentSousTournoi.getActiveNbTour() - 1;
 			currentTour = currentSousTournoi.getTours().get(pageIndex);
+		} else {
+			pageIndex = -1;
 		}
 		getView().setSousTournoi(currentSousTournoi, pageIndex);
 	}

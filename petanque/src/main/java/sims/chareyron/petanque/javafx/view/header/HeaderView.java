@@ -52,8 +52,8 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> imp
 		getUiHandlers().onTournoiClassiqueCreationClicked();
 	}
 
-	public void onTournoiLoadedClicked(Long id) {
-		getUiHandlers().onTournoiLoadedClicked(id);
+	public void onTournoiLoadedClicked(Long id, String nom) {
+		getUiHandlers().onTournoiLoadedClicked(id, nom);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> imp
 			MenuItem tournoi = new MenuItem(t.getNom());
 			tournoi.setId(t.getId().toString());
 			tournoi.setOnAction(e -> {
-				onTournoiLoadedClicked(t.getId());
+				onTournoiLoadedClicked(t.getId(), t.getNom());
 			});
 			menuCharger.getItems().add(tournoi);
 		});

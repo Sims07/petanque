@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javafx.beans.property.BooleanProperty;
 import javafx.stage.Stage;
 import sims.chareyron.petanque.javafx.controller.ActionMementoFS;
+import sims.chareyron.petanque.javafx.controller.ExecutorFS;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractWidgetPresenter;
 import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
@@ -20,6 +21,8 @@ import sims.chareyron.petanque.model.Tournoi;
 public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyView> implements HeaderUiHandlers {
 	@Autowired
 	private TournoiFS tournoiFS;
+	@Autowired
+	private ExecutorFS executorFS;
 	@Autowired
 	private ActionMementoFS actionMementoFS;
 
@@ -75,13 +78,15 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 	}
 
 	@Override
-	public void onTournoiLoadedClicked(Long idTournoi) {
-		long b = System.currentTimeMillis();
-		tournoiFS.loadTournoiById(idTournoi);
-		long e = System.currentTimeMillis();
-		System.out.println("loading:" + (e - b));
-		placeManager.revealPlace(Token.TOKEN_TOURNOI_CLASSIQUE);
-
+	public void onTournoiLoadedClicked(Long idTournoi, String nom) {
+		System.out.println("avant");
+		executorFS.executeLongOp((Long tournoiId) -> {
+			return tournoiFS.loadTournoiById(tournoiId);
+		}, idTournoi, (Tournoi t) -> {
+			placeManager.revealPlace(Token.TOKEN_TOURNOI_CLASSIQUE);
+			return t;
+		}, "Chargement du tournoi " + nom);
+		System.out.println("apres");
 	}
 
 }

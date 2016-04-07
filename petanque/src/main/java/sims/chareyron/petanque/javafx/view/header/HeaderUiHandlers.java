@@ -9,5 +9,5 @@ public interface HeaderUiHandlers extends UiHandlers {
 
 	void onNextClicked();
 
-	void onTournoiLoadedClicked(Long idTournoi);
+	void onTournoiLoadedClicked(Long idTournoi, String nom);
 }
