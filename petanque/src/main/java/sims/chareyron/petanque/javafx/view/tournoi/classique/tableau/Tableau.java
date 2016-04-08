@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Rectangle2D;
+import javafx.geometry.VPos;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -15,6 +16,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
@@ -24,6 +27,7 @@ import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tour;
 
 public class Tableau extends Pane {
+	private static final String FINALE = "Finale";
 	private static double EQUIPE_WIDTH = 100;
 	private static final int PY = 5;
 	private static final int PX = 20;
@@ -53,8 +57,6 @@ public class Tableau extends Pane {
 		int colIndexEdge = columnIndex;
 		// draw parties
 		for (int i = nbT - 2; i >= 0; i--) {
-			Tour tour = tours.get(i);
-			System.out.println(columnIndex + "::" + tour.getParties().size());
 			partiesMap.put(columnIndex, new HashMap<>());
 			drawTour(nbColumns, columnIndex, tours.get(i), false);
 			columnIndex++;
@@ -66,6 +68,68 @@ public class Tableau extends Pane {
 			drawEdge(nbColumns, colIndexEdge, tour, false);
 			colIndexEdge++;
 		}
+		drawFinal(nbColumns, tours.get(nbT - 1).getParties().get(0));
+		drawTitle("Tournoi principal");
+
+	}
+
+	private void drawTitle(String title) {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		double xMil = primaryScreenBounds.getWidth() / 2;
+		double y = PY;
+		Text finaleTexte = new Text(xMil - (title.length() / 2) * 15, y, title);
+		finaleTexte.setTextOrigin(VPos.TOP);
+		finaleTexte.setFont(Font.font(25));
+		finaleTexte.setFill(Color.GOLD);
+		getChildren().add(finaleTexte);
+	}
+
+	private void drawFinal(int nbColumns, Partie laFinal) {
+
+		int indexRectLeftDemiFinal = nbColumns / 2 - 1;
+		int indexRectRightDemiFinal = nbColumns / 2;
+
+		Rectangle leftRect = partiesMap.get(indexRectLeftDemiFinal).get(0);
+		leftRect.setStroke(Color.SILVER);
+		leftRect.setStrokeWidth(3);
+		Rectangle rightRect = partiesMap.get(indexRectRightDemiFinal).get(0);
+		rightRect.setStroke(Color.SILVER);
+		rightRect.setStrokeWidth(3);
+		Path path = new Path();
+		// move to milieu left
+		path.getElements().add(new MoveTo(leftRect.getX() + EQUIPE_WIDTH / 2, leftRect.getY()));
+		// draw verical line
+		path.getElements().add(new LineTo(leftRect.getX() + EQUIPE_WIDTH / 2, leftRect.getY() - PX));
+		// draw line milieu des 2 rectangles
+		double xEdge = leftRect.getX() + EQUIPE_WIDTH + PX / 2;
+		double yEdge = leftRect.getY() - PX;
+		path.getElements().add(new LineTo(xEdge, yEdge));
+		// draw connection to finale
+		double xVertConnection = leftRect.getX() + EQUIPE_WIDTH + PX / 2;
+		double yVertConnection = leftRect.getY() - 2 * PX;
+		path.getElements().add(new LineTo(xVertConnection, yVertConnection));
+		// dessiner
+		Rectangle finaleRect = drawPartie(laFinal, xVertConnection - EQUIPE_WIDTH / 2, yVertConnection - EQUIPE_HEIGHT);
+		// move to edge
+		path.getElements().add(new MoveTo(xEdge, yEdge));
+		// draw horizontal line until right rectangle
+		path.getElements().add(new LineTo(rightRect.getX() + 0.5 * EQUIPE_WIDTH, yEdge));
+		// connect to rectangle
+		path.getElements().add(new LineTo(rightRect.getX() + 0.5 * EQUIPE_WIDTH, rightRect.getY()));
+		path.setStroke(Color.GOLD);
+		path.setStrokeWidth(2);
+		// display text finale
+		Text finaleTexte = new Text(xVertConnection - (FINALE.length() / 2) * 10, finaleRect.getY() - PX, FINALE);
+		finaleTexte.setFont(Font.font(20));
+		finaleTexte.setTextOrigin(VPos.BASELINE);
+		finaleTexte.setFill(Color.GOLD);
+		finaleTexte.setTextAlignment(TextAlignment.CENTER);
+		finaleRect.setStrokeWidth(5);
+		finaleRect.setStrokeType(StrokeType.OUTSIDE);
+		finaleRect.setStroke(Color.GOLD);
+		getChildren().add(path);
+		getChildren().add(finaleRect);
+		getChildren().add(finaleTexte);
 
 	}
 
