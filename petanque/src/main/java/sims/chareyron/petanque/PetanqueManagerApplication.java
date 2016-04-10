@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Lazy;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
 import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
-import sims.chareyron.petanque.javafx.view.tournoi.classique.tableau.Tableau;
-import sims.chareyron.petanque.model.Principal;
 
 @Lazy
 @SpringBootApplication
@@ -29,14 +26,15 @@ public class PetanqueManagerApplication extends AbstractJavaFxSpring {
 	public void start(Stage stage) throws Exception {
 		MAIN_STAGE = stage;
 		placeManager.setStage(stage);
-		// placeManager.revealDefaultPlace();
-		Principal pr = tournoiFS.getAllSavedTournoi().get(0).getPrincipal();
+		placeManager.revealDefaultPlace();
 		placeManager.init();
-		Tableau root = new Tableau();
-
-		Scene scene = new Scene(root);
-		root.drawTableau(pr);
-		stage.setScene(scene);
+		/*
+		 * Principal pr = tournoiFS.getAllSavedTournoi().get(0).getPrincipal();
+		 * placeManager.init(); Tableau root = new Tableau();
+		 * 
+		 * Scene scene = new Scene(root); root.drawTableau(pr);
+		 * stage.setScene(scene);
+		 */
 
 	}
 

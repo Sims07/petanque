@@ -3,6 +3,7 @@ package sims.chareyron.petanque.javafx.view.header;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.property.BooleanProperty;
@@ -14,11 +15,15 @@ import sims.chareyron.petanque.javafx.framework.mvp.AbstractWidgetPresenter;
 import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
 import sims.chareyron.petanque.javafx.framework.mvp.ViewWithUiHandlers;
+import sims.chareyron.petanque.javafx.model.RefreshTournoiEvent;
 import sims.chareyron.petanque.javafx.view.Token;
+import sims.chareyron.petanque.model.Complementaire;
+import sims.chareyron.petanque.model.Principal;
 import sims.chareyron.petanque.model.Tournoi;
 
 @Component
 public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyView> implements HeaderUiHandlers {
+	private Tournoi currentTournoi;
 	@Autowired
 	private TournoiFS tournoiFS;
 	@Autowired
@@ -36,6 +41,18 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 		void setNextEnabled(BooleanProperty enable);
 
 		void setListeTournoi(List<Tournoi> tournois);
+
+		void setLoadedTournoi(Tournoi loaded);
+
+		void setDisplayPrincipalTournoi(Principal principal);
+
+		void setDisplayComplementaireTournoi(Complementaire principal);
+
+		void setDisplayPreferencesTournoi(Tournoi currentTournoi);
+
+		void setUpdateDisplayPrincipalTournoi(Principal principal);
+
+		void setUpdateDisplayPrincipalTournoi(Complementaire complementaire);
 	}
 
 	@Autowired
@@ -61,7 +78,8 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 
 	@Override
 	public void onTournoiClassiqueCreationClicked() {
-		tournoiFS.createTournoiClassique();
+		updateCurrentTournoi(tournoiFS.createTournoiClassique());
+
 		placeManager.revealPlace(Token.TOKEN_TOURNOI_CLASSIQUE);
 
 	}
@@ -79,14 +97,48 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 
 	@Override
 	public void onTournoiLoadedClicked(Long idTournoi, String nom) {
-		System.out.println("avant");
+
 		executorFS.executeLongOp((Long tournoiId) -> {
 			return tournoiFS.loadTournoiById(tournoiId);
 		}, idTournoi, (Tournoi t) -> {
 			placeManager.revealPlace(Token.TOKEN_TOURNOI_CLASSIQUE);
+			updateCurrentTournoi(t);
 			return t;
 		}, "Chargement du tournoi " + nom);
-		System.out.println("apres");
+	}
+
+	private void updateCurrentTournoi(Tournoi t) {
+		this.currentTournoi = t;
+		getView().setLoadedTournoi(currentTournoi);
+	}
+
+	@EventListener
+	public void onRefreshedTournoi(RefreshTournoiEvent evt) {
+		updateCurrentTournoi(evt.getRefreshedTournoi());
+		if (currentTournoi.getPrincipal().isTirageAuSortFait()) {
+			getView().setUpdateDisplayPrincipalTournoi(currentTournoi.getPrincipal());
+		}
+		if (currentTournoi.getComplementaire().isTirageAuSortFait()) {
+			getView().setUpdateDisplayPrincipalTournoi(currentTournoi.getComplementaire());
+		}
+	}
+
+	@Override
+	public void onPrincipalAffichageClicked() {
+		getView().setDisplayPrincipalTournoi(currentTournoi.getPrincipal());
+
+	}
+
+	@Override
+	public void onComplementaireClicked() {
+		getView().setDisplayComplementaireTournoi(currentTournoi.getComplementaire());
+
+	}
+
+	@Override
+	public void onPreferencesClicked() {
+		getView().setDisplayPreferencesTournoi(currentTournoi);
+
 	}
 
 }

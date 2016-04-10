@@ -7,8 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import sims.chareyron.petanque.javafx.framework.AbstractFxmlView;
 
 @Component
@@ -27,6 +30,12 @@ public class PlaceManagerImpl implements PlaceManager {
 
 		stage.setResizable(true);
 		stage.centerOnScreen();
+		stage.minHeightProperty().set(800);
+		stage.minWidthProperty().set(1200);
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		stage.setWidth(primaryScreenBounds.getWidth());
+		stage.setHeight(primaryScreenBounds.getHeight());
+		stage.initStyle(StageStyle.UNIFIED);
 		stage.setFullScreen(true);
 		stage.show();
 	}

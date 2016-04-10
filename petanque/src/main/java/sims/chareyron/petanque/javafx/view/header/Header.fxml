@@ -38,6 +38,13 @@
                         </MenuItem>
                      </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="Affichage">
+                    <items>
+                      <MenuItem fx:id="principalAffichage" mnemonicParsing="false" onAction="#onPrincipalAffichageClicked" text="Principal" />
+                        <MenuItem fx:id="complemetaireAffichage" mnemonicParsing="false" onAction="#onComplementaireClicked" text="Complémetaire" />
+                      <MenuItem fx:id="preferencesAffichage" mnemonicParsing="false" onAction="#onPreferencesClicked" text="Préférences" />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </children>

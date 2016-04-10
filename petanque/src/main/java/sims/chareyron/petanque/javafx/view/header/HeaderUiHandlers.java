@@ -10,4 +10,10 @@ public interface HeaderUiHandlers extends UiHandlers {
 	void onNextClicked();
 
 	void onTournoiLoadedClicked(Long idTournoi, String nom);
+
+	public void onPrincipalAffichageClicked();
+
+	public void onComplementaireClicked();
+
+	public void onPreferencesClicked();
 }

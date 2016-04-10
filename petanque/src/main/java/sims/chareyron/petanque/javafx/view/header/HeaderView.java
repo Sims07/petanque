@@ -1,35 +1,60 @@
 package sims.chareyron.petanque.javafx.view.header;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import sims.chareyron.petanque.PetanqueManagerApplication;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
+import sims.chareyron.petanque.javafx.view.tournoi.classique.tableau.Tableau;
+import sims.chareyron.petanque.model.Complementaire;
+import sims.chareyron.petanque.model.Principal;
 import sims.chareyron.petanque.model.Tournoi;
 
 @Component
-public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> implements HeaderPresenter.MyView {
-
+public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
+		implements HeaderPresenter.MyView, Initializable {
+	private SimpleBooleanProperty principalAffichageEnable = new SimpleBooleanProperty();
+	private SimpleBooleanProperty complementaireAffichageEnable = new SimpleBooleanProperty();
 	@FXML
 	MenuBar menuBar;
-
+	@FXML
+	MenuItem principalAffichage;
+	@FXML
+	MenuItem complemetaireAffichage;
+	@FXML
+	MenuItem preferencesAffichage;
 	@FXML
 	Menu menuCharger;
 
 	@FXML
 	MenuItem previous;
-
+	Scene sceneTournoiPrincipal;
+	Scene sceneTournoiComplemetaire;
+	Stage dialogTournoiPrincipal;
+	Stage dialogTournoiComplementaire;
+	Tableau principalTableau;
+	Tableau complementaireTableau;
 	@FXML
 	MenuItem next;
 
@@ -87,6 +112,86 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers> imp
 			});
 			menuCharger.getItems().add(tournoi);
 		});
+
+	}
+
+	public void onPrincipalAffichageClicked() {
+		getUiHandlers().onPrincipalAffichageClicked();
+	}
+
+	public void onComplementaireClicked() {
+		getUiHandlers().onComplementaireClicked();
+
+	}
+
+	public void onPreferencesClicked() {
+		getUiHandlers().onPreferencesClicked();
+	}
+
+	@Override
+	public void setLoadedTournoi(Tournoi loaded) {
+		principalAffichageEnable.set(loaded.getPrincipal().isTirageAuSortFait());
+		complementaireAffichageEnable.set(loaded.getComplementaire().isTirageAuSortFait());
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		principalAffichage.disableProperty().bind(Bindings.not(principalAffichageEnable));
+		complemetaireAffichage.disableProperty().bind(Bindings.not(complementaireAffichageEnable));
+
+		principalTableau = new Tableau();
+		dialogTournoiPrincipal = new Stage();
+		dialogTournoiPrincipal.setResizable(true);
+		dialogTournoiPrincipal.initStyle(StageStyle.DECORATED);
+		dialogTournoiPrincipal.initOwner(PetanqueManagerApplication.MAIN_STAGE);
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		dialogTournoiPrincipal.setMinWidth(primaryScreenBounds.getWidth());
+		dialogTournoiPrincipal.setMinHeight(primaryScreenBounds.getHeight());
+		dialogTournoiPrincipal.setAlwaysOnTop(false);
+		dialogTournoiPrincipal.initModality(Modality.NONE);
+		sceneTournoiPrincipal = new Scene(principalTableau);
+
+		complementaireTableau = new Tableau();
+		dialogTournoiComplementaire = new Stage();
+		dialogTournoiComplementaire.setResizable(true);
+		dialogTournoiComplementaire.initOwner(PetanqueManagerApplication.MAIN_STAGE);
+		dialogTournoiComplementaire.initStyle(StageStyle.DECORATED);
+		dialogTournoiComplementaire.initModality(Modality.NONE);
+		sceneTournoiComplemetaire = new Scene(complementaireTableau);
+	}
+
+	@Override
+	public void setDisplayPrincipalTournoi(Principal principal) {
+
+		principalTableau.drawTableau(principal);
+		dialogTournoiPrincipal.setScene(sceneTournoiPrincipal);
+		dialogTournoiPrincipal.show();
+
+	}
+
+	@Override
+	public void setDisplayComplementaireTournoi(Complementaire compl) {
+		complementaireTableau.drawTableau(compl);
+		dialogTournoiComplementaire.setScene(sceneTournoiComplemetaire);
+		dialogTournoiComplementaire.show();
+
+	}
+
+	@Override
+	public void setDisplayPreferencesTournoi(Tournoi currentTournoi) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setUpdateDisplayPrincipalTournoi(Principal principal) {
+		principalTableau.drawTableau(principal);
+
+	}
+
+	@Override
+	public void setUpdateDisplayPrincipalTournoi(Complementaire complementaire) {
+		complementaireTableau.drawTableau(complementaire);
 
 	}
 

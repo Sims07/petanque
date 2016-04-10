@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import sims.chareyron.petanque.javafx.model.AbstractAction;
 import sims.chareyron.petanque.javafx.model.Action;
 import sims.chareyron.petanque.javafx.model.EquipeModel;
+import sims.chareyron.petanque.javafx.model.RefreshTournoiEvent;
 import sims.chareyron.petanque.javafx.model.TirageAuSortEvent;
 import sims.chareyron.petanque.javafx.model.TournoiCreatedEvent;
 import sims.chareyron.petanque.javafx.model.TournoiLoadedEvent;
@@ -74,6 +75,7 @@ public class TournoiFSImpl implements TournoiFS {
 
 	public Tournoi refreshTournoi() {
 		currentTournoi = getTournoiById(currentTournoi.getId());
+		publisher.publishEvent(new RefreshTournoiEvent(this, currentTournoi));
 		return currentTournoi;
 	}
 
