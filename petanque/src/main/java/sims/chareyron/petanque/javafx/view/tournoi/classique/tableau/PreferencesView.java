@@ -5,8 +5,6 @@ import java.util.ResourceBundle;
 
 import org.springframework.stereotype.Component;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,15 +65,7 @@ public class PreferencesView extends AbstractViewWithUiHandlers<PreferenceUiHand
 		couleurPartieFinale.setValue(convert(pref.getCouleurPartieFinale()));
 		couleurTexteFinale.setValue(convert(pref.getCouleurTexteTitre()));
 		partieHeight.setValue(pref.getPartieHeight());
-		partieHeight.valueProperty().addListener(new ChangeListener<Number>() {
 
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				pref.setPartieHeight((Integer) newValue);
-
-			}
-		});
-		;
 	}
 
 	public void onPrefChanged(Event evt) {
@@ -95,6 +85,8 @@ public class PreferencesView extends AbstractViewWithUiHandlers<PreferenceUiHand
 			pref.setCouleurTexteFinale(decode(couleurPartieFinale.getValue()));
 		} else if (src.equals(couleurTexteFinale)) {
 			pref.setCouleurTexteTitre(decode(couleurTexteFinale.getValue()));
+		} else if (src.equals(partieHeight)) {
+			pref.setPartieHeight((int) partieHeight.getValue());
 		}
 	}
 

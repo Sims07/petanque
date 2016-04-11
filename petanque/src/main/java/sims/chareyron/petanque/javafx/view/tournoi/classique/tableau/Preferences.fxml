@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <VBox fx:id="mainPanel" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.tournoi.classique.tableau.PreferencesView">
    <children>
       <TitledPane animated="false" collapsible="false" text="Général">
@@ -47,7 +46,7 @@
                   <ColorPicker fx:id="couleurPartieFinale" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <ColorPicker fx:id="couleurPartie" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Couleur du bord des autres parties" GridPane.rowIndex="3" />
-                  <Slider fx:id="partieHeight" max="50.0" min="5.0" GridPane.columnIndex="1">
+                  <Slider fx:id="partieHeight" max="50.0" min="5.0" onDragDetected="#onPrefChanged" onDragExited="#onPrefChanged" onSwipeLeft="#onPrefChanged" onSwipeRight="#onPrefChanged" onTouchReleased="#onPrefChanged" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1">
                      <padding>
                         <Insets left="5.0" />
                      </padding>
