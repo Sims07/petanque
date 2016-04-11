@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 import org.springframework.stereotype.Component;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -85,8 +87,6 @@ public class PreferencesView extends AbstractViewWithUiHandlers<PreferenceUiHand
 			pref.setCouleurTexteFinale(decode(couleurPartieFinale.getValue()));
 		} else if (src.equals(couleurTexteFinale)) {
 			pref.setCouleurTexteTitre(decode(couleurTexteFinale.getValue()));
-		} else if (src.equals(partieHeight)) {
-			pref.setPartieHeight((int) partieHeight.getValue());
 		}
 	}
 
@@ -107,6 +107,16 @@ public class PreferencesView extends AbstractViewWithUiHandlers<PreferenceUiHand
 		dialog.initOwner(PetanqueManagerApplication.MAIN_STAGE);
 
 		dialog.setScene(scene);
+		partieHeight.valueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+
+				System.out.println("Update value:" + (Double) newValue + "event:");
+				pref.setPartieHeight(((Double) newValue).intValue());
+
+			}
+		});
 	}
 
 	public void onAppliquerClicked() {

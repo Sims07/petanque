@@ -46,7 +46,7 @@
                   <ColorPicker fx:id="couleurPartieFinale" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <ColorPicker fx:id="couleurPartie" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Couleur du bord des autres parties" GridPane.rowIndex="3" />
-                  <Slider fx:id="partieHeight" max="50.0" min="5.0" onDragDetected="#onPrefChanged" onDragExited="#onPrefChanged" onSwipeLeft="#onPrefChanged" onSwipeRight="#onPrefChanged" onTouchReleased="#onPrefChanged" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1">
+                  <Slider fx:id="partieHeight" max="50.0" min="5.0" onDragDetected="#onPrefChanged" onDragExited="#onPrefChanged" onInputMethodTextChanged="#onPrefChanged" onMouseDragExited="#onPrefChanged" onSwipeLeft="#onPrefChanged" onSwipeRight="#onPrefChanged" onTouchReleased="#onPrefChanged" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1">
                      <padding>
                         <Insets left="5.0" />
                      </padding>

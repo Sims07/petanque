@@ -102,6 +102,7 @@ public class PlaceManagerImpl implements PlaceManager {
 		parentPresenter.getView().setInSlot(revealedInSlot, presenterToBind.getView());
 		// bind du presenter courant
 		if (!presenterToBind.isBound()) {
+			((AbstractFxmlView) presenterToBind.getView()).getParent();
 			presenterToBind.bind();
 		}
 		// appeler on bind sur tous ses enfants

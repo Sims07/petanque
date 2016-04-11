@@ -46,8 +46,8 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Préférences">
                     <items>
-                      <MenuItem fx:id="preferencesAffichagePrincipal" mnemonicParsing="false" onAction="#onPreferencesPrincipalClicked" text="Principal" />
-                      <MenuItem fx:id="preferencesAffichageComplementaire" mnemonicParsing="false" text="Complémentaire" />
+                      <MenuItem fx:id="preferencesAffichagePrincipal" disable="true" mnemonicParsing="false" onAction="#onPreferencesPrincipalClicked" text="Principal" />
+                      <MenuItem fx:id="preferencesAffichageComplementaire" disable="true" mnemonicParsing="false" text="Complémentaire" />
                     </items>
                   </Menu>
               </menus>

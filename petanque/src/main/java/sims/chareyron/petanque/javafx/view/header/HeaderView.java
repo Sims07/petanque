@@ -72,7 +72,8 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 	public void setViewBindings(Stage stage) {
 
 		mainPanel.prefWidthProperty().bind(stage.widthProperty());
-
+		preferencesAffichageComplementaire.disableProperty().bind(complemetaireAffichage.disableProperty());
+		preferencesAffichagePrincipal.disableProperty().bind(principalAffichage.disableProperty());
 	}
 
 	public void onTournoiCreationClassiqueClicked() {

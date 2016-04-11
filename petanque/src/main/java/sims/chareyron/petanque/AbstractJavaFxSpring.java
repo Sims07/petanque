@@ -16,9 +16,12 @@ public abstract class AbstractJavaFxSpring extends Application {
 
 	@Override
 	public void init() throws Exception {
+		beforeLoadingSpring();
 		applicationContext = SpringApplication.run(getClass(), savedArgs);
 		applicationContext.getAutowireCapableBeanFactory().autowireBean(this);
 	}
+
+	protected abstract void beforeLoadingSpring();
 
 	@Override
 	public void stop() throws Exception {
