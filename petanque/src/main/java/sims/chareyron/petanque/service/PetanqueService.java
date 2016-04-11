@@ -6,6 +6,7 @@ import java.util.Set;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.Partition;
+import sims.chareyron.petanque.model.PreferenceAffichage;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tournoi;
 
@@ -15,6 +16,8 @@ public interface PetanqueService {
 	Set<Equipe> getAllTeamByTournoi(Long idTournoi);
 
 	List<Tournoi> getAllTournoi();
+
+	PreferenceAffichage updatePref(PreferenceAffichage pref);
 
 	String isPetanqueRestStarted();
 

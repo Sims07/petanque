@@ -19,6 +19,7 @@ import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.EquipeStats;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.Partition;
+import sims.chareyron.petanque.model.PreferenceAffichage;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.StatisticModel;
 import sims.chareyron.petanque.model.Tour;
@@ -26,6 +27,7 @@ import sims.chareyron.petanque.model.Tournoi;
 import sims.chareyron.petanque.resource.ComplementaireResource;
 import sims.chareyron.petanque.resource.EquipeRestResource;
 import sims.chareyron.petanque.resource.PartieResource;
+import sims.chareyron.petanque.resource.PreferenceAffichageResource;
 import sims.chareyron.petanque.resource.PrincipalResource;
 import sims.chareyron.petanque.resource.TourResource;
 import sims.chareyron.petanque.resource.TournoiRestResource;
@@ -38,6 +40,8 @@ public class PetanqueServiceImpl implements PetanqueService {
 	private TournoiRestResource tournoiResource;
 	@Autowired
 	private PrincipalResource principalResource;
+	@Autowired
+	private PreferenceAffichageResource preferenceAffichageResource;
 	@Autowired
 	private ComplementaireResource complementaireResource;
 	@Autowired
@@ -411,5 +415,11 @@ public class PetanqueServiceImpl implements PetanqueService {
 		statsEquipe.setNbEquipesC((int) aTournoi.getEquipes().stream().filter(e -> {
 			return !e.isFausseEquipe() && e.isInscritDansLeComplementaire();
 		}).count());
+	}
+
+	@Override
+	@Transactional
+	public PreferenceAffichage updatePref(PreferenceAffichage pref) {
+		return preferenceAffichageResource.save(pref);
 	}
 }

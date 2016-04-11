@@ -10,7 +10,6 @@ import javafx.geometry.VPos;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -23,23 +22,38 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
+import sims.chareyron.petanque.model.PreferenceAffichage;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tour;
 
 public class Tableau extends Pane {
+	private Color BORD_COULEUR_PARTIE = Color.YELLOWGREEN;
+	private Color COULEUR_TEXTE_FINALE = Color.GOLD;
+	private Color COULEUR_TEXTE_TITRE = Color.GOLD;
 	private static final String FINALE = "Finale";
 	private static double EQUIPE_WIDTH = 100;
-	private static final int PY = 5;
-	private static final int PX = 20;
-	private static final int EQUIPE_HEIGHT = 20;
-	private static final Paint EQUIPEGAGNANTE = Color.GREEN;
-	private static final Paint EQUIPEPERDANTE = Color.GRAY;
-	private static final Paint PARTIENONJOUE = Color.BLUE;
+	private int PY = 5;
+	private int PX = 20;
+	private int EQUIPE_HEIGHT = 20;
+	private Paint EQUIPEGAGNANTE = Color.GREEN;
+	private Paint EQUIPEPERDANTE = Color.GRAY;
+	private Paint EQUIPEPARTIENONJOUE = Color.BLUE;
 	// map tour -> partieIndex -> rectangle
+	@SuppressWarnings("unchecked")
 	private Map<Integer, Map<Integer, Rectangle>> partiesMap = new java.util.HashMap();
 
 	public void drawTableau(SousTournoi sousTournoi) {
-
+		getChildren().clear();
+		PreferenceAffichage prefAffichage = sousTournoi.getPreferenceAffichage();
+		EQUIPEGAGNANTE = Color.valueOf(prefAffichage.getCouleurEquipeGagnante());
+		EQUIPEPERDANTE = Color.valueOf(prefAffichage.getCouleurEquipePerdante());
+		EQUIPEPARTIENONJOUE = Color.valueOf(prefAffichage.getCouleurEquipePartieNonJouée());
+		EQUIPE_HEIGHT = prefAffichage.getPartieHeight();
+		PX = prefAffichage.getEcartWidth();
+		PY = prefAffichage.getEcartHeight();
+		COULEUR_TEXTE_FINALE = Color.valueOf(prefAffichage.getCouleurTexteFinale());
+		BORD_COULEUR_PARTIE = Color.valueOf(prefAffichage.getCouleurPartie());
+		COULEUR_TEXTE_TITRE = Color.valueOf(prefAffichage.getCouleurTexteTitre());
 		List<Tour> tours = sousTournoi.getTours();
 		// dessiner la moitié de chaque tour
 		int nbColumns = (tours.size() - 1) * 2;
@@ -80,7 +94,7 @@ public class Tableau extends Pane {
 		Text finaleTexte = new Text(xMil - (title.length() / 2) * 15, y, title);
 		finaleTexte.setTextOrigin(VPos.TOP);
 		finaleTexte.setFont(Font.font(25));
-		finaleTexte.setFill(Color.GOLD);
+		finaleTexte.setFill(COULEUR_TEXTE_TITRE);
 		getChildren().add(finaleTexte);
 	}
 
@@ -116,17 +130,17 @@ public class Tableau extends Pane {
 		path.getElements().add(new LineTo(rightRect.getX() + 0.5 * EQUIPE_WIDTH, yEdge));
 		// connect to rectangle
 		path.getElements().add(new LineTo(rightRect.getX() + 0.5 * EQUIPE_WIDTH, rightRect.getY()));
-		path.setStroke(Color.GOLD);
+		path.setStroke(COULEUR_TEXTE_FINALE);
 		path.setStrokeWidth(2);
 		// display text finale
 		Text finaleTexte = new Text(xVertConnection - (FINALE.length() / 2) * 10, finaleRect.getY() - PX, FINALE);
 		finaleTexte.setFont(Font.font(20));
 		finaleTexte.setTextOrigin(VPos.BASELINE);
-		finaleTexte.setFill(Color.GOLD);
+		finaleTexte.setFill(COULEUR_TEXTE_FINALE);
 		finaleTexte.setTextAlignment(TextAlignment.CENTER);
 		finaleRect.setStrokeWidth(5);
 		finaleRect.setStrokeType(StrokeType.OUTSIDE);
-		finaleRect.setStroke(Color.GOLD);
+		finaleRect.setStroke(COULEUR_TEXTE_FINALE);
 		getChildren().add(path);
 		getChildren().add(finaleRect);
 		getChildren().add(finaleTexte);
@@ -332,7 +346,7 @@ public class Tableau extends Pane {
 		partieRect.setFill(Color.WHITESMOKE);
 		partieRect.setArcHeight(5);
 		partieRect.setArcWidth(5);
-		partieRect.setStroke(Color.YELLOWGREEN);
+		partieRect.setStroke(BORD_COULEUR_PARTIE);
 		return partieRect;
 	}
 
@@ -342,22 +356,12 @@ public class Tableau extends Pane {
 	private List<Shape> drawEquipes(Partie partie, Rectangle container) {
 		Equipe equipe1Model = partie.getEquipe1();
 		Equipe equipe2Model = partie.getEquipe2();
-		Circle equipe1 = new Circle();
-		equipe1.setCenterX(container.getX() + 0.25 * EQUIPE_WIDTH);
-		equipe1.setCenterY(container.getY() + 0.5 * EQUIPE_HEIGHT);
-		equipe1.setRadius(0.5 * (EQUIPE_HEIGHT - 5));
-		equipe1.setFill(getColorEquipe(partie, true));
 
 		Text equipe1Label = new Text(container.getX() + 0.12 * EQUIPE_WIDTH, container.getY() + 0.7 * EQUIPE_HEIGHT,
 				equipe1Model == null ? "" : "" + equipe1Model.getNumero());
 		equipe1Label.setFill(getColorEquipe(partie, true));
 		equipe1Label.setTextAlignment(TextAlignment.CENTER);
 
-		Circle equipe2 = new Circle();
-		equipe2.setCenterX(container.getX() + 0.75 * EQUIPE_WIDTH);
-		equipe2.setCenterY(container.getY() + 0.5 * EQUIPE_HEIGHT);
-		equipe2.setRadius(0.5 * (EQUIPE_HEIGHT - 5));
-		equipe2.setFill(getColorEquipe(partie, false));
 		Text equipe2Label = new Text(container.getX() + 0.60 * EQUIPE_WIDTH, container.getY() + 0.7 * EQUIPE_HEIGHT,
 				equipe2Model == null ? "" : "" + equipe2Model.getNumero());
 		equipe2Label.setFill(getColorEquipe(partie, false));
@@ -374,7 +378,7 @@ public class Tableau extends Pane {
 				return p.getEquipe1Gagnante() ? EQUIPEPERDANTE : EQUIPEGAGNANTE;
 			}
 		} else {
-			return PARTIENONJOUE;
+			return EQUIPEPARTIENONJOUE;
 		}
 	}
 }

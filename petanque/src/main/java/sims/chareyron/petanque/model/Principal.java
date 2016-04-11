@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -29,7 +31,8 @@ public class Principal extends AbstractTournoi {
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OrderBy("nbTour ASC")
 	private List<Tour> tours = new ArrayList<Tour>();
-
+	@OneToOne(cascade = CascadeType.ALL)
+	private PreferenceAffichage preferenceAffichage;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -75,4 +78,18 @@ public class Principal extends AbstractTournoi {
 		this.tirageAuSortFait = tirageAuSortFait;
 	}
 
+	public PreferenceAffichage getPreferenceAffichage() {
+		return preferenceAffichage;
+	}
+
+	public void setPreferenceAffichage(PreferenceAffichage preferenceAffichage) {
+		this.preferenceAffichage = preferenceAffichage;
+	}
+
+	@PrePersist
+	public void update() {
+		if (preferenceAffichage == null) {
+			preferenceAffichage = new PreferenceAffichage();
+		}
+	}
 }

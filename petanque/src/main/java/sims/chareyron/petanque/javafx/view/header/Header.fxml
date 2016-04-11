@@ -42,7 +42,12 @@
                     <items>
                       <MenuItem fx:id="principalAffichage" mnemonicParsing="false" onAction="#onPrincipalAffichageClicked" text="Principal" />
                         <MenuItem fx:id="complemetaireAffichage" mnemonicParsing="false" onAction="#onComplementaireClicked" text="Complémetaire" />
-                      <MenuItem fx:id="preferencesAffichage" mnemonicParsing="false" onAction="#onPreferencesClicked" text="Préférences" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Préférences">
+                    <items>
+                      <MenuItem fx:id="preferencesAffichagePrincipal" mnemonicParsing="false" onAction="#onPreferencesPrincipalClicked" text="Principal" />
+                      <MenuItem fx:id="preferencesAffichageComplementaire" mnemonicParsing="false" text="Complémentaire" />
                     </items>
                   </Menu>
               </menus>

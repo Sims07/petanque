@@ -11,13 +11,16 @@ import javafx.stage.Stage;
 import sims.chareyron.petanque.javafx.controller.ActionMementoFS;
 import sims.chareyron.petanque.javafx.controller.ExecutorFS;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
+import sims.chareyron.petanque.javafx.framework.AbstractFxmlView;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractWidgetPresenter;
 import sims.chareyron.petanque.javafx.framework.mvp.PlaceManager;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
 import sims.chareyron.petanque.javafx.framework.mvp.ViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.model.RefreshTournoiEvent;
 import sims.chareyron.petanque.javafx.view.Token;
+import sims.chareyron.petanque.javafx.view.tournoi.classique.tableau.IPreferencesView;
 import sims.chareyron.petanque.model.Complementaire;
+import sims.chareyron.petanque.model.PreferenceAffichage;
 import sims.chareyron.petanque.model.Principal;
 import sims.chareyron.petanque.model.Tournoi;
 
@@ -32,6 +35,7 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 	private ActionMementoFS actionMementoFS;
 
 	private PlaceManager placeManager;
+	private IPreferencesView prefView;
 
 	public interface MyView extends View, ViewWithUiHandlers<HeaderUiHandlers> {
 		void setViewBindings(Stage stage);
@@ -56,10 +60,11 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 	}
 
 	@Autowired
-	public HeaderPresenter(MyView view, PlaceManager placeManager) {
+	public HeaderPresenter(MyView view, IPreferencesView prefView, PlaceManager placeManager) {
 		super(view);
 		this.view = view;
 		this.placeManager = placeManager;
+		this.prefView = prefView;
 	}
 
 	@Override
@@ -69,6 +74,8 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 		getView().setNextEnabled(actionMementoFS.isNextEnabled());
 		getView().setPreviousEnabled(actionMementoFS.isPreviousEnabled());
 		getView().setListeTournoi(tournoiFS.getAllSavedTournoi());
+		((AbstractFxmlView) prefView).getParent();
+		prefView.setUiHandlers(this);
 	}
 
 	@Override
@@ -136,8 +143,17 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 	}
 
 	@Override
-	public void onPreferencesClicked() {
-		getView().setDisplayPreferencesTournoi(currentTournoi);
+	public void onPreferencesClicked(boolean principal) {
+		PreferenceAffichage pref = principal ? currentTournoi.getPrincipal().getPreferenceAffichage()
+				: currentTournoi.getComplementaire().getPreferenceAffichage();
+		prefView.setPreferences(pref);
+		prefView.setShowInDialog();
+
+	}
+
+	@Override
+	public void onPreferenceChanged(PreferenceAffichage pref) {
+		tournoiFS.savePreference(pref);
 
 	}
 

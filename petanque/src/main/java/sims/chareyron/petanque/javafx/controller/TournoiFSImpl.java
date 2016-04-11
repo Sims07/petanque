@@ -19,6 +19,7 @@ import sims.chareyron.petanque.javafx.model.TournoiLoadedEvent;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.Partition;
+import sims.chareyron.petanque.model.PreferenceAffichage;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tournoi;
 import sims.chareyron.petanque.service.PetanqueService;
@@ -245,6 +246,12 @@ public class TournoiFSImpl implements TournoiFS {
 				partie.getEquipe1().getNumero() == equipeGagnante.getNumero(), "", tourId, isPrincipal);
 		refreshTournoi();
 		return p;
+	}
+
+	@Override
+	public void savePreference(PreferenceAffichage pref) {
+		petanqueService.updatePref(pref);
+		refreshTournoi();
 	}
 
 }

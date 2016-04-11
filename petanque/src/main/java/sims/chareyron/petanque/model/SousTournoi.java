@@ -10,6 +10,8 @@ public interface SousTournoi {
 
 	List<Tour> getTours();
 
+	PreferenceAffichage getPreferenceAffichage();
+
 	int getActiveNbTour();
 
 	void setActiveNbTour(int activeTour);

@@ -43,7 +43,9 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 	@FXML
 	MenuItem complemetaireAffichage;
 	@FXML
-	MenuItem preferencesAffichage;
+	MenuItem preferencesAffichagePrincipal;
+	@FXML
+	MenuItem preferencesAffichageComplementaire;
 	@FXML
 	Menu menuCharger;
 
@@ -124,8 +126,13 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 
 	}
 
-	public void onPreferencesClicked() {
-		getUiHandlers().onPreferencesClicked();
+	public void onPreferencesPrincipalClicked() {
+		getUiHandlers().onPreferencesClicked(true);
+	}
+
+	public void onPreferencesComplemetaireClicked() {
+
+		getUiHandlers().onPreferencesClicked(false);
 	}
 
 	@Override

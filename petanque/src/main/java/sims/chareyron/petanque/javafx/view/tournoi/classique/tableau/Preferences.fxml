@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<VBox fx:id="mainPanel" alignment="CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sims.chareyron.petanque.javafx.view.tournoi.classique.tableau.PreferencesView">
+   <children>
+      <TitledPane animated="false" collapsible="false" text="Général">
+         <content>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Couleur titre principal" />
+                  <ColorPicker fx:id="couleurTexteFinale" onAction="#onPrefChanged" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </content>
+      </TitledPane>
+      <TitledPane collapsible="false" text="Préférence de l'affichage des parties">
+         <content>
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="50.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Couleur du bord de la demi-finale" GridPane.rowIndex="1" />
+                  <ColorPicker fx:id="couleurPartieeDemiFinale" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Couleur du bord de la finale" GridPane.rowIndex="2" />
+                  <ColorPicker fx:id="couleurPartieFinale" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ColorPicker fx:id="couleurPartie" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Couleur du bord des autres parties" GridPane.rowIndex="3" />
+                  <Slider fx:id="partieHeight" max="50.0" min="5.0" GridPane.columnIndex="1">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Slider>
+                  <Label text="Hauteur partie" />
+               </children>
+            </GridPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" text="Préférence de l'affichage des équipes">
+         <content>
+            <GridPane prefWidth="500.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ColorPicker fx:id="couleurEquipeGagnante" onAction="#onPrefChanged" GridPane.columnIndex="1" />
+                  <Label text="Couleur du texte de l'équipe gagnante" />
+                  <Label text="Couleur du texte de l'équipe perdante" GridPane.rowIndex="1" />
+                  <ColorPicker fx:id="couleurEquipePerdante" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Couleur du texte de l'équipe d'une partie non jouée" GridPane.rowIndex="2" />
+                  <ColorPicker fx:id="couleurEquipePartieNonJouée" onAction="#onPrefChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+         </content>
+      </TitledPane>
+      <Button mnemonicParsing="false" onAction="#onAppliquerClicked" text="Appliquer">
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>

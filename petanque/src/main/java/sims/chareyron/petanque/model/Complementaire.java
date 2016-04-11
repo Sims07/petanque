@@ -10,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -35,6 +37,8 @@ public class Complementaire extends AbstractTournoi {
 	private Long id;
 
 	private boolean tirageAuSortFait;
+	@OneToOne(cascade = CascadeType.ALL)
+	private PreferenceAffichage preferenceAffichage;
 
 	@Override
 	public Long getId() {
@@ -71,5 +75,20 @@ public class Complementaire extends AbstractTournoi {
 	@Override
 	public void setTirageAuSortFait(boolean tirageAuSortFait) {
 		this.tirageAuSortFait = tirageAuSortFait;
+	}
+
+	public PreferenceAffichage getPreferenceAffichage() {
+		return preferenceAffichage;
+	}
+
+	public void setPreferenceAffichage(PreferenceAffichage preferenceAffichage) {
+		this.preferenceAffichage = preferenceAffichage;
+	}
+
+	@PrePersist
+	public void update() {
+		if (preferenceAffichage == null) {
+			preferenceAffichage = new PreferenceAffichage();
+		}
 	}
 }

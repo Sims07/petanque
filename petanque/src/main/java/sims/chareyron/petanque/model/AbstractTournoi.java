@@ -20,4 +20,5 @@ public abstract class AbstractTournoi extends GenericPE implements SousTournoi {
 	public void setStatistics(List<StatisticModel> statistics) {
 		this.statistics = statistics;
 	}
+
 }
