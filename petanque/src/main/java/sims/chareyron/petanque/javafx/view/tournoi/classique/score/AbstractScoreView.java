@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
@@ -46,7 +47,8 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 
 	@FXML
 	protected Label scoreTitleLabel;
-
+	@FXML
+	private CheckBox filtrePartieEnded;
 	@FXML
 	protected javafx.scene.control.ScrollPane partiesPanel;
 	private List<PartieView> partiesDisplay;
@@ -170,15 +172,20 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 				ok = ok || p.getEquipe1() != null && String.valueOf(p.getEquipe1().getNumero()).contains(filtre);
 			}
 		}
+		boolean afficherPartiesTerminees = filterDisplayPartieEnded.get();
+		if (ok && !afficherPartiesTerminees) {
+			ok = !p.isTermine();
+		}
 		return ok;
 
 	}
 
 	@Override
 	public void setScore(Partie partie) {
-		PartieView partieViewToUpdate = partiesDisplay.parallelStream().filter(p -> {
-			return p.getPartie().equals(partie);
-		}).findFirst().get();
+		PartieView partieViewToUpdate = cacheParties.get(partie.getId());
+		parties.parallelStream().filter(p -> {
+			return p.getId().equals(partie.getId());
+		}).findFirst().get().setTermine(partie.isTermine());
 		partieViewToUpdate.updatePartie(partie);
 
 	}
@@ -188,6 +195,7 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 		this.filter = filter;
 		this.filterDisplayPartieEnded = filterDisplayPartieEnded;
 		numeroEquipeFilter.textProperty().bindBidirectional(filter);
+		filtrePartieEnded.selectedProperty().bindBidirectional(filterDisplayPartieEnded);
 
 	}
 

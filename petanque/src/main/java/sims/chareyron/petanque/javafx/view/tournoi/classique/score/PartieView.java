@@ -26,8 +26,7 @@ import sims.chareyron.petanque.model.Partie;
 @Component
 @Scope("prototype")
 public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> implements Initializable {
-	@FXML
-	private Label partie;
+
 	@FXML
 	private Label equipe1;
 	@FXML
@@ -47,11 +46,19 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 	private final String styleEquipeGagnante = "-fx-text-fill: white";
 	private final String styleEquipePerdante = "-fx-text-fill: grey";
 	private final String styleEquipeAttente = "-fx-text-fill: #32C5E3";
-	private final String styleNumero = "-fx-border-radius: 5; -fx-border-color: black; -fx-label-padding: 2;";
+	private final String styleNumero = "-fx-border-radius: 5; -fx-border-color: black;";
 	private Equipe equipeModel1;
 	private Equipe equipeModel2;
 	private Partie currentPartie;
 	private String index;
+
+	public Partie getCurrentPartie() {
+		return currentPartie;
+	}
+
+	public void setCurrentPartie(Partie currentPartie) {
+		this.currentPartie = currentPartie;
+	}
 
 	public void setPartie(Partie apartie, String index) {
 		this.index = index;
@@ -59,7 +66,6 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 		String numero1Style = styleNumero;
 		String numero2Style = styleNumero;
 		currentPartie = apartie;
-		partie.setText(String.format("Partie %s", index));
 		equipeModel1 = apartie.getEquipe1() != null ? apartie.getEquipe1() : emptyEquipe();
 		equipeModel2 = apartie.getEquipe2() != null ? apartie.getEquipe2() : emptyEquipe();
 		List<Joueur> joueursEq1 = equipeModel1.getJoueurs();
