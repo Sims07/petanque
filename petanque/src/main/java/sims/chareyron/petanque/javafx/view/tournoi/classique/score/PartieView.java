@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -165,6 +166,11 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 
 	public void updatePartie(Partie partie) {
 		setPartie(partie, index);
+	}
+
+	public void setVisible(BooleanBinding createBooleanBinding) {
+		partiePanel.visibleProperty().bind(createBooleanBinding);
+
 	}
 
 }

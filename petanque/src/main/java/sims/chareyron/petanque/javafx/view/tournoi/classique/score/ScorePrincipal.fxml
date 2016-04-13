@@ -26,8 +26,8 @@
                           </rowConstraints>
                            <children>
                               <Label text="Numéro d'équipe" />
-                              <TextField GridPane.columnIndex="1" />
-                              <Button mnemonicParsing="false" text="Rechecher" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                              <TextField fx:id="numeroEquipeFilter" GridPane.columnIndex="1" />
+                              <Button mnemonicParsing="false" onAction="#rechercher" text="Rechecher" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
                      </children>

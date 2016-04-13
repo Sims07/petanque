@@ -1,5 +1,7 @@
 package sims.chareyron.petanque.javafx.view.tournoi.classique.score;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import sims.chareyron.petanque.javafx.framework.mvp.View;
 import sims.chareyron.petanque.javafx.framework.mvp.ViewWithUiHandlers;
 import sims.chareyron.petanque.model.Partie;
@@ -12,5 +14,7 @@ public interface IScoreView extends View, ViewWithUiHandlers<ScoreUiHandlers> {
 	void setTour(int currentPageIndex, SousTournoi currentSousTournoi);
 
 	void setScore(Partie p);
+
+	void setFilter(SimpleStringProperty filter, SimpleBooleanProperty filterDisplayPartieEnded);
 
 }

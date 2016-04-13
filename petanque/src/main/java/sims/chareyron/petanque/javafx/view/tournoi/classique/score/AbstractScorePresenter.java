@@ -2,6 +2,8 @@ package sims.chareyron.petanque.javafx.view.tournoi.classique.score;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractWidgetPresenter;
 import sims.chareyron.petanque.model.Equipe;
@@ -18,9 +20,14 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 	protected SousTournoi currentSousTournoi;
 	protected Tour currentTour;
 	protected int pageIndex = -1;
+	private SimpleStringProperty filter;
+
+	private SimpleBooleanProperty filterDisplayPartieEnded;
 
 	public AbstractScorePresenter(IScoreView view) {
 		super(view);
+		filter = new SimpleStringProperty("");
+		filterDisplayPartieEnded = new SimpleBooleanProperty(true);
 	}
 
 	@Override
@@ -48,6 +55,7 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 	public void onBind() {
 		pageIndex = -1;
 		getView().setUiHandlers(this);
+		getView().setFilter(filter, filterDisplayPartieEnded);
 	}
 
 	@Override
