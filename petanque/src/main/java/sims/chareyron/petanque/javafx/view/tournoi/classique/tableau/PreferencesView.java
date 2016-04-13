@@ -112,7 +112,6 @@ public class PreferencesView extends AbstractViewWithUiHandlers<PreferenceUiHand
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-				System.out.println("Update value:" + (Double) newValue + "event:");
 				pref.setPartieHeight(((Double) newValue).intValue());
 
 			}

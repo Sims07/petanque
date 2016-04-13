@@ -46,7 +46,7 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 	private final String styleEquipeGagnante = "-fx-text-fill: white";
 	private final String styleEquipePerdante = "-fx-text-fill: grey";
 	private final String styleEquipeAttente = "-fx-text-fill: #32C5E3";
-	private final String styleNumero = "-fx-border-radius: 5; -fx-border-color: black;";
+	private final String styleNumero = "";
 	private Equipe equipeModel1;
 	private Equipe equipeModel2;
 	private Partie currentPartie;
@@ -70,8 +70,8 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 		equipeModel2 = apartie.getEquipe2() != null ? apartie.getEquipe2() : emptyEquipe();
 		List<Joueur> joueursEq1 = equipeModel1.getJoueurs();
 		List<Joueur> joueursEq2 = equipeModel2.getJoueurs();
-		numero1.setText(String.valueOf(equipeModel1.getNumero()));
-		numero2.setText(String.valueOf(equipeModel2.getNumero()));
+		numero1.setText(displayNumero(equipeModel1.getNumero()));
+		numero2.setText(displayNumero(equipeModel2.getNumero()));
 		equipe1.setText(displayEquipe(joueursEq1));
 		equipe2.setText(displayEquipe(joueursEq2));
 
@@ -106,6 +106,10 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 		partiePanel.setStyle(style);
 		gagnants.getSelectionModel().selectedItemProperty().addListener(listener);
 
+	}
+
+	private String displayNumero(int numero) {
+		return String.format("Equipe n°%s", String.valueOf(numero));
 	}
 
 	private String displayEquipe(List<Joueur> joueursEq1) {
