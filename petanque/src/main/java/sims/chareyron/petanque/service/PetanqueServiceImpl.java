@@ -422,4 +422,49 @@ public class PetanqueServiceImpl implements PetanqueService {
 	public PreferenceAffichage updatePref(PreferenceAffichage pref) {
 		return preferenceAffichageResource.save(pref);
 	}
+
+	@Override
+	@Transactional
+	public Partie resetEquipeGagnante(Partie currentPartie, Long aTourId, boolean aIsPrincipal, Long aTournoiId) {
+		Partie toUpdate = partieResource.findOne(currentPartie.getId());
+		toUpdate.setTermine(false);
+		toUpdate.setEnAttente(true);
+		toUpdate.setEquipe1Gagnante(null);
+		toUpdate.setScore(null);
+
+		// update les autres parties
+		// update next partie
+		Tour tour = tourResource.findOne(aTourId);
+		SousTournoi ssTournoi = null;
+		if (aIsPrincipal) {
+			ssTournoi = principalResource.findOne(aTournoiId);
+		} else {
+			ssTournoi = complementaireResource.findOne(aTournoiId);
+		}
+		List<Partie> partiesCurrentTour = tour.getParties();
+		cleanPartiesDuplicates(partiesCurrentTour);
+		int partieIndex = partiesCurrentTour.indexOf(toUpdate) + 1;
+		// divided by 2 for finding next partie index in the next tour
+		double nextPartieDIndex = partieIndex / 2.0;
+		int nextPartieIndex = (int) Math.ceil(nextPartieDIndex);
+		int nextTourIndex = tour.getNbTour() + 1;
+		// get next tour
+		Optional<Tour> nextTourOpt = ssTournoi.getTours().stream().filter(t -> t.getNbTour() == nextTourIndex)
+				.findFirst();
+		if (nextTourOpt.isPresent()) {
+			Tour nextTour = nextTourOpt.get();
+			// select the next partie
+			cleanPartiesDuplicates(nextTour.getParties());
+			Partie nextPartie = nextTour.getParties().get(nextPartieIndex - 1);
+			// set l'equipe gagnante
+			if (nextPartieDIndex < nextPartieIndex) {
+				// equipe1
+				nextPartie.setEquipe1(null);
+			} else {
+				nextPartie.setEquipe2(null);
+			}
+		}
+		toUpdate = partieResource.save(toUpdate);
+		return toUpdate;
+	}
 }

@@ -38,4 +38,6 @@ public interface PetanqueService {
 
 	void calculerLesStatistiques(SousTournoi aSousTournoi, Tournoi aTournoi);
 
+	Partie resetEquipeGagnante(Partie currentPartie, Long aTourId, boolean aIsPrincipal, Long aTournoiId);
+
 }

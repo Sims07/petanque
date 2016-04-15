@@ -33,4 +33,6 @@ public interface TournoiFS {
 	void savePreference(PreferenceAffichage pref);
 
 	Partie marquerScorePartie(Partie partie, Equipe equipeGagnante, Long tourId, boolean isPrincipal);
+
+	Partie resetEquipeGagnante(Partie currentPartie, Long aTourId, boolean isPrincipal);
 }

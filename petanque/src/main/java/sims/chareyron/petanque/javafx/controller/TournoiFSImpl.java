@@ -254,4 +254,12 @@ public class TournoiFSImpl implements TournoiFS {
 		refreshTournoi();
 	}
 
+	@Override
+	public Partie resetEquipeGagnante(Partie currentPartie, Long aTourId, boolean isPrincipal) {
+		Partie updatedPartie = petanqueService.resetEquipeGagnante(currentPartie, aTourId, isPrincipal,
+				currentTournoi.getId());
+		refreshTournoi();
+		return updatedPartie;
+	}
+
 }

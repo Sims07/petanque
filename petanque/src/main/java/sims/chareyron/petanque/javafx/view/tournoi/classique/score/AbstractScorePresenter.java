@@ -60,11 +60,15 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 
 	@Override
 	public void onGagnantSelected(Partie aPartie, Equipe equipeGagnante) {
-		long b = System.currentTimeMillis();
+
 		Partie updated = tournoiFS.marquerScorePartie(aPartie, equipeGagnante, currentTour.getId(), isPrincipal());
 
-		long e = System.currentTimeMillis();
-		System.out.println("scoremarqued:" + (e - b));
+		getView().setScore(updated);
+	}
+
+	@Override
+	public void onResetEquipeGagnante(Partie currentPartie) {
+		Partie updated = tournoiFS.resetEquipeGagnante(currentPartie, currentTour.getId(), isPrincipal());
 		getView().setScore(updated);
 	}
 

@@ -2,6 +2,7 @@ package sims.chareyron.petanque.javafx.view.tournoi.classique.score;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.context.annotation.Scope;
@@ -12,6 +13,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -80,6 +84,9 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 		gagnants.getItems().add(equipeModel2);
 		if (!apartie.isTermine()) {
 			style = partieAttente;
+			gagnants.getSelectionModel().clearSelection();
+			equipe1.setStyle(styleEquipeAttente);
+			equipe2.setStyle(styleEquipeAttente);
 		} else {
 			style = partieTerminee;
 			if (apartie.getEquipe1Gagnante() != null) {
@@ -180,6 +187,21 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 
 	public void setVisible(BooleanBinding createBooleanBinding) {
 		partiePanel.visibleProperty().bind(createBooleanBinding);
+
+	}
+
+	public void onResetEquipeGagnante() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setHeaderText(String.format("Voulez vous effacer le score de la partie opposant : \n-%s\n-%s?",
+				displayEquipe(getCurrentPartie().getEquipe1().getJoueurs()),
+				displayEquipe(getCurrentPartie().getEquipe2().getJoueurs())));
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			getUiHandlers().onResetEquipeGagnante(getCurrentPartie());
+		} else {
+			// ... user chose CANCEL or closed the dialog
+		}
 
 	}
 

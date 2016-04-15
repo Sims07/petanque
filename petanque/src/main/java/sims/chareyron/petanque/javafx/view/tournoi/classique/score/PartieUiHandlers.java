@@ -6,4 +6,6 @@ import sims.chareyron.petanque.model.Partie;
 
 public interface PartieUiHandlers extends UiHandlers {
 	void onGagnantSelected(Partie aPartie, Equipe equipeGagnante);
+
+	void onResetEquipeGagnante(Partie currentPartie);
 }
