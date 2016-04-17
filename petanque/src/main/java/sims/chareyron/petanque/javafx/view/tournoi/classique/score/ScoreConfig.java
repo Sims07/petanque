@@ -9,4 +9,9 @@ public class ScoreConfig {
 	public IScoreView scorePrincipalView() {
 		return new ScorePrincipalView();
 	}
+
+	@Bean(name = "complementaireScore")
+	public IScoreView scoreComplementaireView() {
+		return new ScoreComplementaireView();
+	}
 }

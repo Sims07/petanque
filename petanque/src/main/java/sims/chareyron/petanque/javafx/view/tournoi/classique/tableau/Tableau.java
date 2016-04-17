@@ -23,6 +23,7 @@ import javafx.stage.Screen;
 import sims.chareyron.petanque.model.Equipe;
 import sims.chareyron.petanque.model.Partie;
 import sims.chareyron.petanque.model.PreferenceAffichage;
+import sims.chareyron.petanque.model.Principal;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tour;
 
@@ -62,7 +63,6 @@ public class Tableau extends Pane {
 		int nbT = tours.size();
 		for (int i = 0; i < nbT - 1; i++) {
 			Tour tour = tours.get(i);
-			System.out.println(columnIndex + ":" + tour.getParties().size());
 			partiesMap.put(columnIndex, new HashMap<>());
 			drawTour(nbColumns, columnIndex, tour, true);
 			drawEdge(nbColumns, columnIndex, tour, true);
@@ -83,7 +83,7 @@ public class Tableau extends Pane {
 			colIndexEdge++;
 		}
 		drawFinal(nbColumns, tours.get(nbT - 1).getParties().get(0));
-		drawTitle("Tournoi principal");
+		drawTitle(sousTournoi instanceof Principal ? "Tournoi principal" : "Tournoi complémentaire");
 
 	}
 

@@ -26,6 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.model.Partie;
+import sims.chareyron.petanque.model.Principal;
 import sims.chareyron.petanque.model.SousTournoi;
 import sims.chareyron.petanque.model.Tour;
 
@@ -65,12 +66,12 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 
 		boolean equipeVisible = true;
 		boolean partieVisible = true;
-		if (tourIndex < 0) {
+		if (!ssTournoi.isTirageAuSortFait()) {
 			scoreTitleLabel.setText("Tirage au sort non effectué");
 			equipeVisible = false;
 			partieVisible = false;
 		} else {
-
+			scoreTitleLabel.setText(ssTournoi instanceof Principal ? "Principal" : "Complémentaire");
 			tours.setMaxPageIndicatorCount(ssTournoi.getTours().size());
 			tours.setCurrentPageIndex(tourIndex);
 			long b = System.currentTimeMillis();
@@ -109,11 +110,14 @@ public abstract class AbstractScoreView extends AbstractViewWithUiHandlers<Score
 	private List<PartieView> displayParties(SousTournoi ssTournoi, VBox partiesB, int pageIndex) {
 		cacheParties.clear();
 		cacheNodeParties.clear();
+
 		List<PartieView> resl = new ArrayList<>();
 		Tour currentTour = ssTournoi.getTours().get(pageIndex);
 		AtomicInteger index = new AtomicInteger(0);
 		parties = currentTour.getParties();
-		parties.forEach(p -> {
+		parties.stream().filter(p -> {
+			return filterDisplayPartieEnded.get() ? true : !p.isTermine();
+		}).forEach(p -> {
 
 			try {
 

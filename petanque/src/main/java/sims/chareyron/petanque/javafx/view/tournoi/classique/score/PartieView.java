@@ -9,15 +9,18 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
@@ -30,7 +33,7 @@ import sims.chareyron.petanque.model.Partie;
 @Component
 @Scope("prototype")
 public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> implements Initializable {
-
+	SimpleDoubleProperty opacityGomme = new SimpleDoubleProperty(1.0);
 	@FXML
 	private Label equipe1;
 	@FXML
@@ -39,7 +42,8 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 	private Label numero1;
 	@FXML
 	private Label numero2;
-
+	@FXML
+	private ImageView gomme;
 	@FXML
 	private GridPane partiePanel;
 	@FXML
@@ -66,6 +70,8 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 
 	public void setPartie(Partie apartie, String index) {
 		this.index = index;
+		opacityGomme.set(apartie.isTermine() ? 1 : 0.5);
+		gomme.setCursor(apartie.isTermine() ? Cursor.HAND : Cursor.DEFAULT);
 		gagnants.getSelectionModel().selectedItemProperty().removeListener(listener);
 		String numero1Style = styleNumero;
 		String numero2Style = styleNumero;
@@ -80,6 +86,7 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 		equipe2.setText(displayEquipe(joueursEq2));
 
 		String style = "-fx-border-radius:5;";
+		gagnants.getItems().clear();
 		gagnants.getItems().add(equipeModel1);
 		gagnants.getItems().add(equipeModel2);
 		if (!apartie.isTermine()) {
@@ -175,6 +182,8 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 			}
 		});
 
+		gomme.opacityProperty().bind(opacityGomme);
+
 	}
 
 	public Partie getPartie() {
@@ -191,16 +200,18 @@ public class PartieView extends AbstractViewWithUiHandlers<PartieUiHandlers> imp
 	}
 
 	public void onResetEquipeGagnante() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setHeaderText(String.format("Voulez vous effacer le score de la partie opposant : \n-%s\n-%s?",
-				displayEquipe(getCurrentPartie().getEquipe1().getJoueurs()),
-				displayEquipe(getCurrentPartie().getEquipe2().getJoueurs())));
+		if (getCurrentPartie().isTermine()) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setHeaderText(String.format("Voulez vous effacer le score de la partie opposant : \n-%s\n-%s?",
+					displayEquipe(getCurrentPartie().getEquipe1().getJoueurs()),
+					displayEquipe(getCurrentPartie().getEquipe2().getJoueurs())));
 
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
-			getUiHandlers().onResetEquipeGagnante(getCurrentPartie());
-		} else {
-			// ... user chose CANCEL or closed the dialog
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				getUiHandlers().onResetEquipeGagnante(getCurrentPartie());
+			} else {
+				// ... user chose CANCEL or closed the dialog
+			}
 		}
 
 	}

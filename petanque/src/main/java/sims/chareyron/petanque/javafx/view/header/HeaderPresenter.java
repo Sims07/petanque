@@ -56,7 +56,8 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 
 		void setUpdateDisplayPrincipalTournoi(Principal principal);
 
-		void setUpdateDisplayPrincipalTournoi(Complementaire complementaire);
+		void setUpdateDisplayComplementaireTournoi(Complementaire complementaire);
+
 	}
 
 	@Autowired
@@ -126,7 +127,7 @@ public class HeaderPresenter extends AbstractWidgetPresenter<HeaderPresenter.MyV
 			getView().setUpdateDisplayPrincipalTournoi(currentTournoi.getPrincipal());
 		}
 		if (currentTournoi.getComplementaire().isTirageAuSortFait()) {
-			getView().setUpdateDisplayPrincipalTournoi(currentTournoi.getComplementaire());
+			getView().setUpdateDisplayComplementaireTournoi(currentTournoi.getComplementaire());
 		}
 	}
 

@@ -18,6 +18,8 @@ public interface SousTournoi {
 
 	void setTirageAuSortFait(boolean tirageAuSortFait);
 
+	boolean isTirageAuSortFait();
+
 	List<StatisticModel> getStatistics();
 
 	void setStatistics(List<StatisticModel> astList);

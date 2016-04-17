@@ -20,6 +20,7 @@ import sims.chareyron.petanque.javafx.view.Token;
 import sims.chareyron.petanque.javafx.view.tournoi.TournoiUiHandlers;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueurPrincipalPresenter;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.joueurs.JoueursComplementairePresenter;
+import sims.chareyron.petanque.javafx.view.tournoi.classique.score.ComplementaireScorePresenter;
 import sims.chareyron.petanque.javafx.view.tournoi.classique.score.PrincipalScorePresenter;
 import sims.chareyron.petanque.model.Tournoi;
 
@@ -43,17 +44,20 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 	private final JoueursComplementairePresenter joueursComplementairePresenter;
 	private final JoueurPrincipalPresenter joueurPrincipalPresenter;
 	private final PrincipalScorePresenter principalScorePresenter;
+	private final ComplementaireScorePresenter complementaireScorePresenter;
 
 	@Autowired
 	public TournoiClassiquePresenter(MyView view, JoueurPrincipalPresenter joueurPrincipalPresenter,
 			JoueursComplementairePresenter joueursComplementairePresenter,
-			PrincipalScorePresenter principalScorePresenter, PlaceManager placeManager) {
+			ComplementaireScorePresenter complementaireScorePresenter, PrincipalScorePresenter principalScorePresenter,
+			PlaceManager placeManager) {
 		super(view);
 		this.view = view;
 		this.placeManager = placeManager;
 		this.joueurPrincipalPresenter = joueurPrincipalPresenter;
 		this.joueursComplementairePresenter = joueursComplementairePresenter;
 		this.principalScorePresenter = principalScorePresenter;
+		this.complementaireScorePresenter = complementaireScorePresenter;
 	}
 
 	@EventListener
@@ -61,6 +65,8 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 
 		if (isBound() && event.isPrincipal()) {
 			principalScorePresenter.setSousTournoi(event.getSousTournoi());
+		} else if (isBound() && !event.isPrincipal()) {
+			complementaireScorePresenter.setSousTournoi(event.getSousTournoi());
 		}
 	}
 
@@ -76,10 +82,15 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 		setInSlot(COMPLEMENTAIRE_JOUEUR_SLOT, joueursComplementairePresenter);
 		setInSlot(PRINCIPAL_JOUEUR_SLOT, joueurPrincipalPresenter);
 		setInSlot(PRINCIPAL_TOURNOI_SLOT, principalScorePresenter);
+		setInSlot(COMPLENTAIRE_TOURNOI_SLOT, complementaireScorePresenter);
 		Tournoi tournoi = tournoiFS.getLoadedTournoi();
 		if (!principalScorePresenter.isBound()) {
 			principalScorePresenter.bind();
 		}
+		if (!complementaireScorePresenter.isBound()) {
+			complementaireScorePresenter.bind();
+		}
+		complementaireScorePresenter.setSousTournoi(tournoi.getComplementaire());
 		principalScorePresenter.setSousTournoi(tournoi.getPrincipal());
 	}
 
@@ -98,5 +109,6 @@ public class TournoiClassiquePresenter extends AbstractPresenter<TournoiClassiqu
 	public void onReveal() {
 		Tournoi tournoi = tournoiFS.getLoadedTournoi();
 		principalScorePresenter.setSousTournoi(tournoi.getPrincipal());
+		complementaireScorePresenter.setSousTournoi(tournoi.getComplementaire());
 	}
 }

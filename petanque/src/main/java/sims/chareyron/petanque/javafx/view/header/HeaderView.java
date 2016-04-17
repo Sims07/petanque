@@ -198,7 +198,7 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 	}
 
 	@Override
-	public void setUpdateDisplayPrincipalTournoi(Complementaire complementaire) {
+	public void setUpdateDisplayComplementaireTournoi(Complementaire complementaire) {
 		complementaireTableau.drawTableau(complementaire);
 
 	}

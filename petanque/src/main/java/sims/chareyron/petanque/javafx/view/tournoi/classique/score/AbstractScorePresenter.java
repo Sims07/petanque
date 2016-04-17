@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import sims.chareyron.petanque.javafx.controller.ExecutorFS;
 import sims.chareyron.petanque.javafx.controller.TournoiFS;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractWidgetPresenter;
 import sims.chareyron.petanque.model.Equipe;
@@ -17,6 +18,8 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 
 	@Autowired
 	protected TournoiFS tournoiFS;
+	@Autowired
+	protected ExecutorFS executorFS;
 	protected SousTournoi currentSousTournoi;
 	protected Tour currentTour;
 	protected int pageIndex = -1;
@@ -45,9 +48,14 @@ public abstract class AbstractScorePresenter extends AbstractWidgetPresenter<ISc
 	@Override
 	public void onTourClicked(int currentPageIndex) {
 		pageIndex = currentPageIndex;
-		currentSousTournoi = getSousTournoi(tournoiFS.getLoadedTournoi());
-		currentTour = currentSousTournoi.getTours().get(currentPageIndex);
-		getView().setTour(currentPageIndex, currentSousTournoi);
+		executorFS.executeLongOp((Long tournoiId) -> {
+			return tournoiFS.getLoadedTournoi();
+		}, null, (Tournoi t) -> {
+			currentSousTournoi = getSousTournoi(tournoiFS.getLoadedTournoi());
+			currentTour = currentSousTournoi.getTours().get(currentPageIndex);
+			getView().setTour(currentPageIndex, currentSousTournoi);
+			return t;
+		}, "Chargement du tour " + (currentPageIndex + 1));
 
 	}
 

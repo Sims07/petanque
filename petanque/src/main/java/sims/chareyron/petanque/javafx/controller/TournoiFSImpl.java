@@ -180,6 +180,7 @@ public class TournoiFSImpl implements TournoiFS {
 	public Tournoi tirageAuSortComplementaire() {
 		actionMementoFS.clear();
 		currentTournoi = tirageAuSort(currentTournoi.getId(), false);
+		publisher.publishEvent(new TirageAuSortEvent(this, false, currentTournoi.getComplementaire()));
 		return currentTournoi;
 
 	}
