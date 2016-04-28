@@ -56,7 +56,9 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 	public AbstractFxmlView() {
 
 		this.presenterProperty = new SimpleObjectProperty<>();
+
 		this.resource = getClass().getResource(getFxmlName());
+		System.out.println("--------------Load res from:" + getClass() + ":" + getFxmlName() + "=>" + resource);
 		this.bundle = getResourceBundle(getBundleName());
 	}
 
@@ -70,7 +72,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 	}
 
 	protected FXMLLoader loadSynchronously(URL resource, ResourceBundle bundle) throws IllegalStateException {
-
+		System.out.println("Load resource:" + resource);
 		FXMLLoader loader = new FXMLLoader(resource, bundle);
 		loader.setControllerFactory(this::createControllerForType);
 		try {
@@ -196,7 +198,7 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 	 *         AirhacksView just airhacks is going to be returned.
 	 */
 	protected String getConventionalName() {
-		return stripEnding(getClass().getSimpleName().toLowerCase());
+		return stripEnding(getClass().getSimpleName());
 	}
 
 	String getBundleName() {
@@ -205,11 +207,11 @@ public abstract class AbstractFxmlView implements ApplicationContextAware, View 
 
 	static String stripEnding(String clazz) {
 
-		if (!clazz.endsWith("view")) {
+		if (!clazz.endsWith("View")) {
 			return clazz;
 		}
 
-		return clazz.substring(0, clazz.lastIndexOf("view"));
+		return clazz.substring(0, clazz.lastIndexOf("View"));
 	}
 
 	/**

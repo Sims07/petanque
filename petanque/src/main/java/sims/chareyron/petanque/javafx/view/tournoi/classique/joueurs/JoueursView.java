@@ -19,6 +19,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import sims.chareyron.petanque.javafx.framework.mvp.AbstractViewWithUiHandlers;
 import sims.chareyron.petanque.javafx.framework.mvp.Slot;
@@ -64,6 +66,16 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 	@Override
 	public void setViewBindings() {
 		initContextMenu();
+		joueur2.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent ke) {
+				if (!creerEquipe.disableProperty().get() && ke.getCode().equals(KeyCode.ENTER)) {
+					onAjouterEquipeClicked();
+				}
+
+			}
+		});
 		// Initialize the person table with the two columns.
 		numeroColumn.setCellValueFactory(new PropertyValueFactory<EquipeModel, Integer>("numero"));
 		joueur1Column.setCellValueFactory(cellData -> cellData.getValue().getJoueur1());
@@ -109,6 +121,10 @@ public abstract class JoueursView extends AbstractViewWithUiHandlers<JoueursUiHa
 
 	public void onAjouterEquipeClicked() {
 		getUiHandlers().onAjouterEquipeClicked();
+		// mettre le focus sur le premier nom
+		joueur1.setText("");
+		joueur2.setText("");
+		joueur1.requestFocus();
 	}
 
 	public void onTirageAuSortClicked() {

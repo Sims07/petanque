@@ -1,0 +1,28 @@
+<launch4jConfig>
+	<headerType>gui</headerType>
+	<outfile>../../../target/petanque.exe</outfile>
+	<jar>../../../target/petanque-0.0.1-SNAPSHOT.jar</jar>
+	<errTitle>Petanque</errTitle>
+	<classPath>
+		<mainClass>sims.chareyron.petanque.PetanqueManagerApplication
+		</mainClass>
+		<cp>classpath</cp>
+	</classPath>
+	<jre>
+		<path>jre</path>
+		<minVersion>1.8.0</minVersion>
+		<initialHeapSize>256</initialHeapSize>
+		<maxHeapSize>1024</maxHeapSize>
+	</jre>
+	<versionInfo>
+		<fileVersion>1.2.3.4</fileVersion>
+		<txtFileVersion>1.0</txtFileVersion>
+		<fileDescription>Gestionnaire de tournois de pétanque</fileDescription>
+		<copyright>Simon Chareyron Corp</copyright>
+		<productVersion>0.0.0.1</productVersion>
+		<txtProductVersion>Petanque Application</txtProductVersion>
+		<productName>Gestionnaire tournoi</productName>
+		<internalName>Gt</internalName>
+		<originalFilename>petanque.exe</originalFilename>
+	</versionInfo>
+</launch4jConfig>

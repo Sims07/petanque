@@ -2,6 +2,7 @@ package sims.chareyron.petanque.javafx.view.header;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.stereotype.Component;
@@ -14,6 +15,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -48,17 +52,15 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 	MenuItem preferencesAffichageComplementaire;
 	@FXML
 	Menu menuCharger;
-
 	@FXML
-	MenuItem previous;
+	MenuItem menuQuitter;
+
 	Scene sceneTournoiPrincipal;
 	Scene sceneTournoiComplemetaire;
 	Stage dialogTournoiPrincipal;
 	Stage dialogTournoiComplementaire;
 	Tableau principalTableau;
 	Tableau complementaireTableau;
-	@FXML
-	MenuItem next;
 
 	@FXML
 	AnchorPane mainPanel;
@@ -77,6 +79,7 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 	}
 
 	public void onTournoiCreationClassiqueClicked() {
+
 		getUiHandlers().onTournoiClassiqueCreationClicked();
 	}
 
@@ -86,13 +89,13 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 
 	@Override
 	public void setPreviousEnabled(BooleanProperty enable) {
-		previous.disableProperty().bind(Bindings.not(enable));
+		// previous.disableProperty().bind(Bindings.not(enable));
 
 	}
 
 	@Override
 	public void setNextEnabled(BooleanProperty enable) {
-		next.disableProperty().bind(Bindings.not(enable));
+		// next.disableProperty().bind(Bindings.not(enable));
 
 	}
 
@@ -129,6 +132,19 @@ public class HeaderView extends AbstractViewWithUiHandlers<HeaderUiHandlers>
 
 	public void onPreferencesPrincipalClicked() {
 		getUiHandlers().onPreferencesClicked(true);
+	}
+
+	public void onQuitterClicked() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText(null);
+		alert.setContentText("Voulez-vous quitter l'application?");
+		alert.initModality(Modality.WINDOW_MODAL);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK) {
+			System.exit(0);
+		}
+
 	}
 
 	public void onPreferencesComplemetaireClicked() {

@@ -17,27 +17,13 @@
                         <Menu mnemonicParsing="false" text="Nouveau tournoi">
                           <items>
                             <MenuItem mnemonicParsing="false" onAction="#onTournoiCreationClassiqueClicked" text="Classique" />
-                            <MenuItem mnemonicParsing="false" text="Poule" />
                           </items>
                         </Menu>
                     
                         <Menu fx:id="menuCharger" mnemonicParsing="false" text="Charger un tournoi" />
+                      <MenuItem fx:id="menuQuitter" mnemonicParsing="false" onAction="#onQuitterClicked" text="Quitter" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Edition">
-                     <items>
-                        <MenuItem fx:id="previous" mnemonicParsing="false" onAction="#onPrecedentClicked" text="Precédent">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="Z" control="ANY" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="next" mnemonicParsing="false" onAction="#onSuivantClicked" text="Suivant">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="Y" control="ANY" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                     </items>
-                  </Menu>
                   <Menu mnemonicParsing="false" text="Affichage">
                     <items>
                       <MenuItem fx:id="principalAffichage" mnemonicParsing="false" onAction="#onPrincipalAffichageClicked" text="Principal" />
